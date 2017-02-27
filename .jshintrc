@@ -1,0 +1,8 @@
+{
+  "esnext": true,
+  "undef": true,
+  "globals": {
+    "log": true,
+    "global": true
+  }
+}
