@@ -1,3 +1,8 @@
+import {
+  createStatusEffectSystem,
+  registerStatusEffects
+} from './statusEffect';
+
 // TODO later, we'll instead register characters dyanamically
 
 const createPlayer = () => {
@@ -19,6 +24,7 @@ const createPlayer = () => {
       accuracy: 0,
       evasion: 50
     },
+    statusEffects: {},
     abilities: {
       'heavyPunch': 1
     }
@@ -44,6 +50,7 @@ const createEnemy = (id) => {
       accuracy: 0,
       evasion: 0
     },
+    statusEffects: {},
     abilities: {
       'heavyPunch': 1
     }
@@ -58,6 +65,10 @@ export const registerCharacters = (worldState) => {
 
 export const createCharacterSystem = (worldState) => {
   const getCharacter = worldState.collections.characters.get;
+
+  const statusEffectSystem = createStatusEffectSystem(worldState);
+
+  registerStatusEffects(statusEffectSystem); // TODO determine best practice for registering stuff
 
   return {
     applyDamage: (characterId, value) => {
@@ -77,7 +88,7 @@ export const createCharacterSystem = (worldState) => {
       if (character.bp <= 0) {
         character.bp = 0;
 
-        // TODO add status effect 'prone'
+        statusEffectSystem.addStatusEffect(characterId, 'prone', {});
       }
     },
     testHit: (attackerId, targetId, bonusAccuracy) => {
@@ -97,6 +108,28 @@ export const createCharacterSystem = (worldState) => {
         delayEndTime: startTime + delay,
         abilityId
       };
+    },
+    addAbility: (characterId, abilityId) => {
+      const character = getCharacter(characterId);
+      const abilities = character.abilities;
+
+      if (abilities[abilityId]) { // could do a one-liner, but nah
+        abilities[abilityId] += 1;
+      } else {
+        abilities[abilityId] = 1;
+      }
+    },
+    removeAbility: (characterId, abilityId) => {
+      const character = getCharacter(characterId);
+      const abilities = character.abilities;
+
+      if (abilities[abilityId]) { // could do a one-liner, but nah
+        abilities[abilityId] -= 1;
+
+        if (abilities[abilityId] <= 0) {
+          delete abilities[abilityId];
+        }
+      }
     },
     modifyStat: (characterId, statKey, value) => {
       const character = getCharacter(characterId);
