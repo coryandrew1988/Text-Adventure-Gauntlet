@@ -15,7 +15,14 @@ export const registerEffects = (worldState, characterSystem, clock, scheduler, f
   });
 
   worldState.registerEffect('setActorActivity', (params, context) => {
-    characterSystem.setActivity(context.actorId, clock.getTime(), params.delay, params.abilityId);
+    const startTime = clock.getTime();
+    const character = getCharacter(context.actorId);
+
+    character.activity = {
+      delayStartTime: startTime,
+      delayEndTime: startTime + params.delay,
+      abilityId: params.abilityId
+    };
 
     flagStateChange();
   });
@@ -67,8 +74,13 @@ export const registerEffects = (worldState, characterSystem, clock, scheduler, f
 
     const damage = Math.max(0, power - resistance);
 
-    // TODO don't get target by ID twice? must decide on best practice for this
-    characterSystem.applyDamage(context.targetId, damage);
+    target.hp -= damage;
+
+    if (target.hp <= 0) {
+      target.hp = 0;
+
+      // TODO add status effect 'defeated'
+    }
 
     flagStateChange();
   });
@@ -77,13 +89,25 @@ export const registerEffects = (worldState, characterSystem, clock, scheduler, f
     const actor = getCharacter(context.actorId);
     const target = getCharacter(context.targetId);
 
-    characterSystem.applyTilt(context.targetId, 1);
+    target.bp -= params.tilt;
+
+    if (target.bp <= 0) {
+      target.bp = 0;
+
+      worldState.statusEffectSystem.apply('prone', context.targetId, {});
+    }
 
     flagStateChange();
   });
 
   worldState.registerEffect('attackTarget', (params, context) => {
-    const isHit = characterSystem.testHit(context.actorId, context.targetId, params.accuracy);
+    const actor = getCharacter(context.actorId);
+    const target = getCharacter(context.targetId);
+
+    const accuracy = params.accuracy + actor.stats.accuracy;
+    const evasion = target.stats.evasion;
+
+    const isHit = Math.random() * 100 < accuracy - evasion;
 
     if (isHit) {
       if (params.hitEffect) {

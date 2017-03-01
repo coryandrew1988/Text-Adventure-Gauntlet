@@ -1,10 +1,15 @@
+// In the long, long run, this might get replaced with a proper database.
+
 export const createCollection = () => {
-  const values = {};
+  const map = new Map();
 
   return {
-    get: id => values[id],
+    get: id => map.get(id),
     insert: value => {
-      values[value.id] = value;
+      map.set(value.id, value);
+    },
+    remove: (id) => {
+      map.delete(id);
     }
   };
 };

@@ -47,7 +47,10 @@ const createHit = (delay, accuracy, power, hitText, missText) => {
           key: 'damageTarget',
           params: { power }
         },
-        { key: 'tiltTarget' },
+        {
+          key: 'tiltTarget',
+          params: { tilt: 1 }
+        },
         publishMessage(hitText)
       ],
       missEffect: publishMessage(missText)

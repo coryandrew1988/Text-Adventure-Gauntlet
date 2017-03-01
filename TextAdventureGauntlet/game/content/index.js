@@ -4,6 +4,7 @@ import {
   createScheduler
 } from '../utils';
 
+import { registerStatusEffects } from './statusEffect';
 import { registerEffects } from './effect';
 import { registerAbilities } from './ability';
 import {
@@ -38,6 +39,7 @@ export const initializeSystem = (system) => {
 
   const characterSystem = createCharacterSystem(worldState);
 
+  registerStatusEffects(worldState);
   registerEffects(worldState, characterSystem, clock, scheduler, flagStateChange);
 
   registerAbilities(worldState);

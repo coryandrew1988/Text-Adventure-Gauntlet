@@ -1,9 +1,4 @@
-import {
-  createStatusEffectSystem,
-  registerStatusEffects
-} from './statusEffect';
-
-// TODO later, we'll instead register characters dyanamically
+// TODO later, we'll instead load characters dyanamically
 
 const createPlayer = () => {
   return {
@@ -58,57 +53,21 @@ const createEnemy = (id) => {
 };
 
 export const registerCharacters = (worldState) => {
-  worldState.collections.characters.insert(createPlayer());
-  worldState.collections.characters.insert(createEnemy('enemyA'));
-  worldState.collections.characters.insert(createEnemy('enemyB'));
+  [
+    createPlayer(),
+    createEnemy('enemyA'),
+    createEnemy('enemyB'),
+    createEnemy('enemyC'),
+    createEnemy('enemyD')
+  ].forEach(c => {
+    worldState.collections.characters.insert(c);
+  });
 };
 
 export const createCharacterSystem = (worldState) => {
   const getCharacter = worldState.collections.characters.get;
 
-  const statusEffectSystem = createStatusEffectSystem(worldState);
-
-  registerStatusEffects(statusEffectSystem); // TODO determine best practice for registering stuff
-
   return {
-    applyDamage: (characterId, value) => {
-      const character = getCharacter(characterId);
-      character.hp -= value;
-
-      if (character.hp <= 0) {
-        character.hp = 0;
-
-        // TODO add status effect 'defeated'
-      }
-    },
-    applyTilt: (characterId, value) => {
-      const character = getCharacter(characterId);
-      character.bp -= value;
-
-      if (character.bp <= 0) {
-        character.bp = 0;
-
-        statusEffectSystem.addStatusEffect(characterId, 'prone', {});
-      }
-    },
-    testHit: (attackerId, targetId, bonusAccuracy) => {
-      const actor = getCharacter(attackerId);
-      const target = getCharacter(targetId);
-
-      const accuracy = bonusAccuracy + actor.stats.accuracy;
-      const evasion = target.stats.evasion;
-
-      return Math.random() * 100 < accuracy - evasion;
-    },
-    setActivity: (characterId, startTime, delay, abilityId) => {
-      const character = getCharacter(characterId);
-
-      character.activity = {
-        delayStartTime: startTime,
-        delayEndTime: startTime + delay,
-        abilityId
-      };
-    },
     addAbility: (characterId, abilityId) => {
       const character = getCharacter(characterId);
       const abilities = character.abilities;
