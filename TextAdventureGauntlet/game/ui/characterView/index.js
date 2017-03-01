@@ -1,8 +1,6 @@
 import {
   React,
   Component,
-  Text,
-  Panel,
   MainPanel
 } from '../basics';
 
@@ -46,3 +44,7 @@ export default class CharacterView extends Component {
     </MainPanel>
   }
 }
+
+CharacterView.propTypes = {
+  system: React.PropTypes.object.isRequired
+};

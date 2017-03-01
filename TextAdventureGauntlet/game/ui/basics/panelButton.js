@@ -13,3 +13,8 @@ export default class PanelButton extends Component {
     </TouchableNativeFeedback>
   }
 }
+
+PanelButton.propTypes = {
+  children: React.PropTypes.node,
+  onPress: React.PropTypes.func.isRequired
+};

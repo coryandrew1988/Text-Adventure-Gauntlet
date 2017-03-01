@@ -27,3 +27,7 @@ export default class ListView extends Component {
 }
 
 Object.assign(ListView, ReactListView);
+
+ListView.propTypes = {
+  shouldLockToBottom: React.PropTypes.bool
+};

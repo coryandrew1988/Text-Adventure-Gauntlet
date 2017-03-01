@@ -3,9 +3,7 @@ import {
   Component,
   Text,
   Panel,
-  PanelButton,
-  MainPanel,
-  MeterBar
+  PanelButton
 } from './basics';
 
 import { StatusMeterBarPanel } from './special';
@@ -64,6 +62,11 @@ class EnemyPanel extends Component {
   }
 }
 
+EnemyPanel.propTypes = {
+  system: React.PropTypes.object.isRequired,
+  characterId: React.PropTypes.string.isRequired,
+};
+
 const rowStyle = {
   flex: 1,
   flexDirection: 'row'
@@ -93,3 +96,7 @@ export default class TargetView extends Component {
     </Panel>;
   }
 }
+
+TargetView.propTypes = {
+  system: React.PropTypes.object.isRequired
+};

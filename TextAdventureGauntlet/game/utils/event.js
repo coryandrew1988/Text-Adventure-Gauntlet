@@ -9,7 +9,7 @@ export const createEvent = () => {
       if (isTriggered) { return; }
 
       isTriggered = true;
-      requestAnimationFrame(() => {
+      global.requestAnimationFrame(() => {
         isTriggered = false;
 
         valueEvent.publish();

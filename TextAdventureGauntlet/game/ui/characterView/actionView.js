@@ -1,10 +1,8 @@
 import {
   React,
   Component,
-  Text,
   Panel,
-  TextButton,
-  MeterBar
+  TextButton
 } from '../basics';
 
 const buttonStyle = {
@@ -32,6 +30,12 @@ class ActionButton extends Component {
     }}>{this.props.label}</TextButton>
   }
 }
+
+ActionButton.propTypes = {
+  system: React.PropTypes.object.isRequired,
+  action: React.PropTypes.object.isRequired,
+  label: React.PropTypes.string.isRequired,
+};
 
 const rowStyle = {
   flex: 1,
@@ -66,3 +70,7 @@ export default class ActionView extends Component {
     </Panel>
   }
 }
+
+ActionView.propTypes = {
+  system: React.PropTypes.object.isRequired
+};

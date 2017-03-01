@@ -18,3 +18,7 @@ export default class TextButton extends Component {
     </PanelButton>
   }
 }
+
+TextButton.propTypes = {
+  children: React.PropTypes.node
+};

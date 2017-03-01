@@ -1,5 +1,4 @@
 import {
-  createEvent,
   createClock,
   createScheduler
 } from '../utils';

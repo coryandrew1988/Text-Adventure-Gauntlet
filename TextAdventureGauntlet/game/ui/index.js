@@ -42,3 +42,7 @@ export default class UI extends Component {
     </Panel>
   }
 }
+
+UI.propTypes = {
+  system: React.PropTypes.object.isRequired
+};

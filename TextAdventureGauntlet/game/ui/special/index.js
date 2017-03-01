@@ -18,6 +18,15 @@ export class StatusMeterBar extends Component {
   }
 }
 
+StatusMeterBar.propTypes = {
+  value: React.PropTypes.number.isRequired,
+  maxValue: React.PropTypes.number.isRequired,
+  color: React.PropTypes.string.isRequired,
+  textStyle: React.PropTypes.object,
+  useLabels: React.PropTypes.bool,
+  valueName: React.PropTypes.string
+};
+
 export class StatusMeterBarPanel extends Component {
   render() {
     const character = this.props.character;
@@ -55,3 +64,9 @@ export class StatusMeterBarPanel extends Component {
     </Panel>;
   }
 }
+
+StatusMeterBarPanel.propTypes = {
+  character: React.PropTypes.object,
+  textStyle: React.PropTypes.object,
+  useLabels: React.PropTypes.bool
+};

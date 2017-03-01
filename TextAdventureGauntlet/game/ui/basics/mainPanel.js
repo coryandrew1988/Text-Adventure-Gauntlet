@@ -15,3 +15,8 @@ export default class MainPanel extends Component {
     </View>
   }
 }
+
+MainPanel.propTypes = {
+  children: React.PropTypes.node,
+  style: React.PropTypes.object
+};

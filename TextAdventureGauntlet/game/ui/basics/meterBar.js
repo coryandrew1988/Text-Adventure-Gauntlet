@@ -34,3 +34,9 @@ export default class MeterBar extends Component {
   }
 }
 
+MeterBar.propTypes = {
+  children: React.PropTypes.node,
+  style: React.PropTypes.object,
+  value: React.PropTypes.number.isRequired,
+  color: React.PropTypes.string.isRequired
+};

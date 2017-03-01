@@ -13,3 +13,8 @@ export default class Text extends Component {
     </ReactText>
   }
 }
+
+Text.propTypes = {
+  children: React.PropTypes.node,
+  style: React.PropTypes.object
+};

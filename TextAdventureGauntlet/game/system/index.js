@@ -1,8 +1,6 @@
 import {
   createEvent,
-  createValueEvent,
-  createClock,
-  createScheduler
+  createValueEvent
 } from '../utils';
 
 import { createWorldState } from './worldState';

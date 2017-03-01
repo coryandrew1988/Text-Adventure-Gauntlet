@@ -1,6 +1,4 @@
 import {
-  createClock,
-  createScheduler,
   createCollection
 } from '../../utils';
 

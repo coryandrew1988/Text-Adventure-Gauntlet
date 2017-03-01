@@ -86,7 +86,6 @@ export const registerEffects = (worldState, characterSystem, clock, scheduler, f
   });
 
   worldState.registerEffect('tiltTarget', (params, context) => {
-    const actor = getCharacter(context.actorId);
     const target = getCharacter(context.targetId);
 
     target.bp -= params.tilt;
