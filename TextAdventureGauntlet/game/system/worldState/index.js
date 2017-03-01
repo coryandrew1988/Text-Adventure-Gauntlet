@@ -3,33 +3,15 @@ import {
 } from '../../utils';
 
 import { createStatusEffectSystem } from './statusEffectSystem';
+import { createEffectSystem } from './effectSystem';
 
 export const createWorldState = () => {
   const characters = createCollection();
   const abilities = createCollection();
   const statusEffects = createCollection();
 
-  const effectMap = new Map();
   const statusEffectSystem = createStatusEffectSystem(statusEffects);
-
-  const executeEffect = (effect, context) => {
-    if (!effect) { return; }
-
-    if (Array.isArray(effect)) {
-      effect.forEach((e) => {
-        executeEffect(e, context);
-      });
-
-      return;
-    }
-
-    const effectCallback = effectMap.get(effect.key);
-    if (!effectCallback) {
-      throw new Error(`There is no effect with key "${effect.key}".`);
-    }
-
-    effectCallback(effect.params, context);
-  };
+  const effectSystem = createEffectSystem();
 
   const worldState = {
     collections: {
@@ -39,16 +21,11 @@ export const createWorldState = () => {
     },
 
     statusEffectSystem,
-    // TODO effectSystem,
-
-    registerEffect: (key, callback) => {
-      effectMap.set(key, callback);
-    },
-    executeEffect,
+    effectSystem,
 
     executeAbility: (id, context) => {
       const ability = abilities.get(id);
-      executeEffect(ability.effect, context);
+      effectSystem.execute(ability.effect, context);
     }
   };
 

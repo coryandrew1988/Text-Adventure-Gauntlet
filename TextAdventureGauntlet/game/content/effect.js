@@ -1,20 +1,24 @@
 export const registerEffects = (worldState, characterSystem, clock, scheduler, flagStateChange) => {
   const getCharacter = worldState.collections.characters.get;
 
-  worldState.registerEffect('delayEffect', (params, context) => {
+  const executeEffect = worldState.effectSystem.execute;
+  const registerEffect = worldState.effectSystem.register;
+  const applyStatusEffect = worldState.statusEffectSystem.apply;
+
+  registerEffect('delayEffect', (params, context) => {
     scheduler.schedule(clock.getTime() + params.delay, () => {
-      worldState.executeEffect(params.effect, context);
+      executeEffect(params.effect, context);
     });
   });
 
-  worldState.registerEffect('publishMessage', (params, context) => {
+  registerEffect('publishMessage', (params, context) => {
     log(params.text);
     // TODO determine the best way to publish a message
     // TODO actually render some templates here
     // TODO use context to communicate about the results of other effects
   });
 
-  worldState.registerEffect('setActorActivity', (params, context) => {
+  registerEffect('setActorActivity', (params, context) => {
     const startTime = clock.getTime();
     const character = getCharacter(context.actorId);
 
@@ -53,19 +57,19 @@ export const registerEffects = (worldState, characterSystem, clock, scheduler, f
     callback();
   };
 
-  worldState.registerEffect('requireActor', (params, context) => {
+  registerEffect('requireActor', (params, context) => {
     requireCharacter(context.actorId, params.status, () => {
-      worldState.executeEffect(params.effect, context);
+      executeEffect(params.effect, context);
     });
   });
 
-  worldState.registerEffect('requireTarget', (params, context) => {
+  registerEffect('requireTarget', (params, context) => {
     requireCharacter(context.targetId, params.status, () => {
-      worldState.executeEffect(params.effect, context);
+      executeEffect(params.effect, context);
     });
   });
 
-  worldState.registerEffect('damageTarget', (params, context) => {
+  registerEffect('damageTarget', (params, context) => {
     const actor = getCharacter(context.actorId);
     const target = getCharacter(context.targetId);
 
@@ -85,7 +89,7 @@ export const registerEffects = (worldState, characterSystem, clock, scheduler, f
     flagStateChange();
   });
 
-  worldState.registerEffect('tiltTarget', (params, context) => {
+  registerEffect('tiltTarget', (params, context) => {
     const target = getCharacter(context.targetId);
 
     target.bp -= params.tilt;
@@ -93,13 +97,13 @@ export const registerEffects = (worldState, characterSystem, clock, scheduler, f
     if (target.bp <= 0) {
       target.bp = 0;
 
-      worldState.statusEffectSystem.apply('prone', context.targetId, {});
+      applyStatusEffect('prone', context.targetId, {});
     }
 
     flagStateChange();
   });
 
-  worldState.registerEffect('attackTarget', (params, context) => {
+  registerEffect('attackTarget', (params, context) => {
     const actor = getCharacter(context.actorId);
     const target = getCharacter(context.targetId);
 
@@ -110,11 +114,11 @@ export const registerEffects = (worldState, characterSystem, clock, scheduler, f
 
     if (isHit) {
       if (params.hitEffect) {
-        worldState.executeEffect(params.hitEffect, context);
+        executeEffect(params.hitEffect, context);
       }
     } else {
       if (params.missEffect) {
-        worldState.executeEffect(params.missEffect, context);
+        executeEffect(params.missEffect, context);
       }
     }
   });
