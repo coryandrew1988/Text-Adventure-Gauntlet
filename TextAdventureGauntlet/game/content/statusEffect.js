@@ -1,5 +1,5 @@
 export const registerStatusEffects = (worldState) => {
-  const getCharacter = worldState.collections.characters.get;
+  const getCharacter = worldState.getCharacter;
 
   const system = worldState.statusEffectSystem;
 

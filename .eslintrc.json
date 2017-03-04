@@ -17,6 +17,7 @@
   },
   "globals": {
     "log": false,
-    "global": false
+    "global": false,
+    "JSON": false
   }
 }

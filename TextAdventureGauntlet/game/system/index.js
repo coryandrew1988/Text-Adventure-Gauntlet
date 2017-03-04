@@ -4,6 +4,7 @@ import {
 } from '../utils';
 
 import { createWorldState } from './worldState';
+import { createUIState } from './uiState';
 
 const createActionResolver = () => {
   const actionDefinitions = {};
@@ -26,7 +27,7 @@ const createActionResolver = () => {
 // TEMP for easy logging in development
 const loggerEvent = createValueEvent();
 global.log = (data) => {
-  loggerEvent.publish(JSON.stringify(data));
+  loggerEvent.publish(JSON.stringify(data, null, 2));
 };
 
 export const createSystem = () => {
@@ -42,28 +43,17 @@ export const createSystem = () => {
     events.message.publish(text);
   });
 
-  const worldState = createWorldState();
+  const worldState = createWorldState(events);
+  const uiState = createUIState();
 
-  const state = {
-    ui: {
-      activeCharacterId: 'player',
-      targetCharacterId: null,
-      characterAbilities: {
-        'player': ['punch']
-      }
-    }
-  };
-
-  const getCharacter = (id) => worldState.collections.characters.get(id);
-  const getActiveCharacter = () => getCharacter(state.ui.activeCharacterId);
-
-  const getActiveCharacterAbilities = () => state.ui.characterAbilities[state.ui.activeCharacterId];
+  const getCharacter = worldState.getCharacter;
+  const getActiveCharacter = () => getCharacter(uiState.getState().playerCharacterId);
 
   const actionResolver = createActionResolver();
   actionResolver.define('useAbility', (params) => {
     worldState.executeAbility(params.abilityId, {
-      actorId: state.ui.activeCharacterId,
-      targetId: state.ui.targetCharacterId
+      actorId: uiState.getState().playerCharacterId,
+      targetId: uiState.getState().targetId
     });
   });
 
@@ -74,19 +64,31 @@ export const createSystem = () => {
 
   return {
     worldState,
+    uiState,
     events, // TODO remove this and expose only what needs to be exposed
     doAction: (action) => {
       events.action.publish(action);
     },
     getMessageHandle: () => events.message.getHandle(),
     getStateHandle: () => events.state.getHandle(),
+    addStateListener: (callback) => {
+      worldState.realm.addListener('change', callback);
+      uiState.realm.addListener('change', callback);
+      // just manage all listeners through here, and keep separate state for world and UI
+    },
+    removeStateListener: (callback) => {
+      worldState.realm.removeListener('change', callback);
+      uiState.realm.removeListener('change', callback);
+    },
     getCharacter,
     getActiveCharacter,
-    getActiveCharacterAbilities,
-    getTargetId: () => state.ui.targetCharacterId,
+    getTargetId: () => {
+      return uiState.getState().targetId;
+    },
     setTargetId: (id) => {
-      state.ui.targetCharacterId = id;
-      events.state.publish();
+      uiState.update(() => {
+        uiState.getState().targetId = id;
+      });
     }
   };
 };

@@ -1,13 +1,15 @@
-export const registerEffects = (worldState, characterSystem, clock, scheduler, flagStateChange) => {
-  const getCharacter = worldState.collections.characters.get;
+export const registerEffects = (realm, worldState, effectSystem, clock, scheduler) => {
+  const getCharacter = worldState.getCharacter;
 
-  const executeEffect = worldState.effectSystem.execute;
-  const registerEffect = worldState.effectSystem.register;
+  const executeEffect = effectSystem.execute;
+  const registerEffect = effectSystem.register;
   const applyStatusEffect = worldState.statusEffectSystem.apply;
 
   registerEffect('delayEffect', (params, context) => {
     scheduler.schedule(clock.getTime() + params.delay, () => {
-      executeEffect(params.effect, context);
+      realm.write(() => {
+        executeEffect(params.effect, context);
+      });
     });
   });
 
@@ -23,12 +25,11 @@ export const registerEffects = (worldState, characterSystem, clock, scheduler, f
     const character = getCharacter(context.actorId);
 
     character.activity = {
-      delayStartTime: startTime,
-      delayEndTime: startTime + params.delay,
-      abilityId: params.abilityId
+      id: Date.now() + '' + Math.random(), // TODO get actual ids
+      startTime: new Date(startTime),
+      endTime: new Date(startTime + params.delay),
+      ability: null // params.abilityId // TODO
     };
-
-    flagStateChange();
   });
 
   const requireCharacter = (id, status, callback) => {
@@ -37,18 +38,17 @@ export const registerEffects = (worldState, characterSystem, clock, scheduler, f
 
     if (status) {
       if (status.isAlive) {
-        if (character.hp <= 0) { return; }
+        if (character.stats.hp <= 0) { return; }
       }
 
       if (status.isAvailable) {
         const activity = character.activity;
-        if (activity && clock.getTime() < activity.delayEndTime) { return; }
+        if (activity && clock.getTime() < activity.endTime.valueOf()) { return; }
       }
 
       if (typeof status.payMP === 'number') {
-        if (character.mp < status.payMP) { return; }
-        character.mp -= status.payMP; // TODO separate mp payment from this stuff, so the order of operations can be controlled
-        flagStateChange();
+        if (character.stats.mp < status.payMP) { return; }
+        character.stats.mp -= status.payMP; // TODO separate mp payment from this stuff, so the order of operations can be controlled
       }
 
       // TODO also do optional checks for other statuses
@@ -78,29 +78,25 @@ export const registerEffects = (worldState, characterSystem, clock, scheduler, f
 
     const damage = Math.max(0, power - resistance);
 
-    target.hp -= damage;
+    target.stats.hp -= damage;
 
-    if (target.hp <= 0) {
-      target.hp = 0;
+    if (target.stats.hp <= 0) {
+      target.stats.hp = 0;
 
       // TODO add status effect 'defeated'
     }
-
-    flagStateChange();
   });
 
   registerEffect('tiltTarget', (params, context) => {
     const target = getCharacter(context.targetId);
 
-    target.bp -= params.tilt;
+    target.stats.bp -= params.tilt;
 
-    if (target.bp <= 0) {
-      target.bp = 0;
+    if (target.stats.bp <= 0) {
+      target.stats.bp = 0;
 
       applyStatusEffect('prone', context.targetId, {});
     }
-
-    flagStateChange();
   });
 
   registerEffect('attackTarget', (params, context) => {

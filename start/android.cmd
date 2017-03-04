@@ -1,4 +1,4 @@
-cd ..\TextAdventureGauntlet
+cd %~dp0..\TextAdventureGauntlet
 start emulator -avd n5
 start react-native start
 timeout 15

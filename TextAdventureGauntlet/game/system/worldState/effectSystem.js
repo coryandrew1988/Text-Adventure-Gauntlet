@@ -1,4 +1,4 @@
-export const createEffectSystem = () => {
+export const createEffectSystem = (realm) => {
   const effectMap = new Map();
 
   const execute = (effect, context) => {

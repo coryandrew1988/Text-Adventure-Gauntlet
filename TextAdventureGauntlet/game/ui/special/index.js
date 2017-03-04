@@ -38,7 +38,7 @@ export class StatusMeterBarPanel extends Component {
       flex: 1
     }}>
       <StatusMeterBar
-        value={character.hp}
+        value={character.stats.hp}
         maxValue={character.stats.maxHP}
         valueName="HP"
         textStyle={textStyle}
@@ -46,7 +46,7 @@ export class StatusMeterBarPanel extends Component {
         useLabels={useLabels}
       />
       <StatusMeterBar
-        value={character.bp}
+        value={character.stats.bp}
         maxValue={character.stats.maxBP}
         valueName="BP"
         textStyle={textStyle}
@@ -54,7 +54,7 @@ export class StatusMeterBarPanel extends Component {
         useLabels={useLabels}
       />
       <StatusMeterBar
-        value={character.mp}
+        value={character.stats.mp}
         maxValue={character.stats.maxMP}
         valueName="MP"
         textStyle={textStyle}

@@ -14,23 +14,24 @@ const textStyle = {
 };
 
 export default class CharacterView extends Component {
-  updateState() {
-    this.setState({
-      character: this.props.system.getActiveCharacter()
-    });
+  constructor() {
+    super();
+
+    this.handleUpdate = () => {
+      this.setState({
+        character: this.props.system.getActiveCharacter()
+      });
+    };
   }
 
   componentWillMount() {
-    this.updateState();
+    this.handleUpdate();
 
-    this.stateHandle = this.props.system.getStateHandle();
-    this.stateHandle.subscribe(() => {
-      this.updateState();
-    });
+    this.props.system.addStateListener(this.handleUpdate);
   }
 
   componentWillUnmount() {
-    this.stateHandle.dispose();
+    this.props.system.removeStateListener(this.handleUpdate);
   }
 
   render() {

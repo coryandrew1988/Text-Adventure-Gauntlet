@@ -14,24 +14,25 @@ const textStyle = {
 };
 
 class EnemyPanel extends Component {
-  updateState() {
-    this.setState({
-      enemy: this.props.system.getCharacter(this.props.characterId),
-      targetId: this.props.system.getTargetId()
-    });
+  constructor() {
+    super();
+
+    this.handleUpdate = () => {
+      this.setState({
+        enemy: this.props.system.getCharacter(this.props.characterId),
+        targetId: this.props.system.getTargetId()
+      });
+    };
   }
 
   componentWillMount() {
-    this.stateHandle = this.props.system.getStateHandle();
-    this.stateHandle.subscribe(() => {
-      this.updateState();
-    });
+    this.handleUpdate();
 
-    this.updateState();
+    this.props.system.addStateListener(this.handleUpdate);
   }
 
   componentWillUnmount() {
-    this.stateHandle.dispose();
+    this.props.system.removeStateListener(this.handleUpdate);
   }
 
   render() {
@@ -53,7 +54,7 @@ class EnemyPanel extends Component {
       borderColor: isTarget ? '#fff' : '#888',
       backgroundColor: isTarget ? '#332' : '#000'
     }}>
-      <Text>{enemy.name}</Text>
+      <Text>{enemy.description.name}</Text>
       <StatusMeterBarPanel
         character={enemy}
         textStyle={textStyle}
