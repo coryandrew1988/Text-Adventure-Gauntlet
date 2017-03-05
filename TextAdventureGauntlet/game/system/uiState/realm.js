@@ -3,6 +3,14 @@ import Realm from 'realm';
 const configuration = {
   path: '/data/data/com.textadventuregauntlet/files/ui.realm',
   schema: [{
+    name: 'Message',
+    primaryKey: 'id',
+    properties: {
+      id: 'string',
+      time: 'date',
+      text: 'string'
+    }
+  }, {
     name: 'State',
     primaryKey: 'key',
     properties: {
@@ -20,7 +28,7 @@ export const createRealm = () => {
     realm.create('State', {
       key: 'only',
       targetId: null,
-      playerCharacterId: 'player'
+      playerCharacterId: 'player' // TODO initialize this in a clean way
     });
   });
 

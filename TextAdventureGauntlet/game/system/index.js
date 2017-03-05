@@ -86,7 +86,7 @@ export const createSystem = () => {
       return uiState.getState().targetId;
     },
     setTargetId: (id) => {
-      uiState.update(() => {
+      uiState.transaction(() => {
         uiState.getState().targetId = id;
       });
     }

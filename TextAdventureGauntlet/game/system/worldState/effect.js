@@ -1,4 +1,4 @@
-export const registerEffects = (realm, worldState, effectSystem, clock, scheduler) => {
+export const registerEffects = (worldState, effectSystem, clock, scheduler) => {
   const getCharacter = worldState.getCharacter;
 
   const executeEffect = effectSystem.execute;
@@ -7,7 +7,7 @@ export const registerEffects = (realm, worldState, effectSystem, clock, schedule
 
   registerEffect('delayEffect', (params, context) => {
     scheduler.schedule(clock.getTime() + params.delay, () => {
-      realm.write(() => {
+      worldState.transaction(() => {
         executeEffect(params.effect, context);
       });
     });

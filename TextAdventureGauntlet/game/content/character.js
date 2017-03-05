@@ -24,12 +24,12 @@ const createPlayer = () => {
   };
 };
 
-const createEnemy = (id) => {
+const createEnemy = (id, name) => {
   return {
     id,
     description: {
       id: id + 'Description',
-      name: 'Enemy'
+      name
     },
     stats: {
       id: id + 'Stats',
@@ -70,15 +70,15 @@ export const registerCharacters = (worldState) => {
       }
     },
     createPlayer(),
-    createEnemy('enemyA'),
-    createEnemy('enemyB'),
-    createEnemy('enemyC'),
-    createEnemy('enemyD')
+    createEnemy('enemyA', 'Enemy A'),
+    createEnemy('enemyB', 'Enemy B'),
+    createEnemy('enemyC', 'Enemy C'),
+    createEnemy('enemyD', 'Enemy D')
   ];
 
   const realm = worldState.realm;
 
-  realm.write(() => {
+  worldState.transaction(() => {
     characters.forEach(c => {
       realm.create('Character', c);
     });

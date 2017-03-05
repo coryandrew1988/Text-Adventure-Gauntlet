@@ -8,7 +8,7 @@ export const createUIState = () => {
   return {
     realm,
     getState,
-    update: callback => {
+    transaction: callback => {
       realm.write(callback);
     },
     addStateListener: callback => {

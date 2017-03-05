@@ -75,17 +75,19 @@ const rowStyle = {
 
 export default class TargetView extends Component {
   render() {
+    // TODO use a room to find all possible targets
+    const ids = ['enemyA', 'enemyB', 'enemyC', 'enemyD', 'temp'];
+
     return <Panel style={{ flex: 1 }}>
       <Panel style={{ flex: 1 }}>
         {[0, 1].map((i) => {
           return <Panel key={i} style={rowStyle}>
             {[0, 1, 2].map(j => j + 3 * i).map((i) => {
-              // TODO use a room to find all possible targets
-              if (i >= 2) {
-                return <Panel key={i} style={rowStyle}></Panel>;
+              if (i >= ids.length) {
+                return null;
               }
 
-              const id = i === 0 ? 'enemyA' : 'enemyB';
+              const id = ids[i];
 
               return <Panel key={i} style={rowStyle}>
                 <EnemyPanel system={this.props.system} characterId={id} />

@@ -11,6 +11,34 @@ import { registerEffects } from './effect';
 import { createStatusEffectSystem } from './statusEffectSystem';
 import { createEffectSystem } from './effectSystem';
 
+const createAbilitySystem = (realm) => {
+  const map = new Map();
+  const convertFromJSON = ({ id, name, effectJSON }) => {
+    return {
+      id,
+      name,
+      effect: JSON.parse(effectJSON)
+    };
+  };
+  return {
+    register: ({ id, name, effect }) => {
+      realm.create('Ability', {
+        id,
+        name,
+        effectJSON: JSON.stringify(effect)
+      });
+    },
+    get: (id) => {
+      let result = map.get(id);
+      if (result) { return result; }
+
+      result = convertFromJSON(realm.objectForPrimaryKey('Ability', id));
+      map.set(id, result);
+      return result;
+    }
+  };
+};
+
 export const createWorldState = (events) => {
   const clock = createClock();
   const scheduler = createScheduler();
@@ -25,19 +53,23 @@ export const createWorldState = (events) => {
 
   const realm = createRealm();
 
-  const abilities = createCollection();
   const statusEffects = createCollection();
 
   const statusEffectSystem = createStatusEffectSystem(statusEffects);
   const effectSystem = createEffectSystem(realm);
+  const abilitySystem = createAbilitySystem(realm);
 
   const worldState = {
     realm,
 
+    transaction: (action) => {
+      realm.write(action);
+    },
+
     statusEffectSystem,
 
-    registerAbility: (value) => {
-      abilities.insert(value);
+    registerAbility: (ability) => {
+      abilitySystem.register(ability);
     },
     getCharacter: (id) => {
       if (!id) { return null; }
@@ -46,7 +78,7 @@ export const createWorldState = (events) => {
     },
 
     executeAbility: (id, context) => {
-      const ability = abilities.get(id);
+      const ability = abilitySystem.get(id);
       // TODO determine the optimal places for transactions
       realm.write(() => {
         effectSystem.execute(ability.effect, context);
@@ -54,7 +86,7 @@ export const createWorldState = (events) => {
     }
   };
 
-  registerEffects(realm, worldState, effectSystem, clock, scheduler);
+  registerEffects(worldState, effectSystem, clock, scheduler);
 
   return worldState;
 };
