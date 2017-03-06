@@ -1,19 +1,19 @@
+import { registerEffects } from './effect';
 import { registerStatusEffects } from './statusEffect';
 import { registerAbilities } from './ability';
 import { registerCharacters } from './character';
 
-const createOnlyRoom = () => {
+const createOnlyRoom = () => { // TODO move this out and expand it into a register/generate room module
   return {
-    characterIds: ['player', 'enemy']
+    characterIds: ['player', 'enemyA']
   };
 };
 
 export const initializeSystem = (system) => {
-  const worldState = system.worldState;
-
-  registerStatusEffects(worldState);
-
-  registerAbilities(worldState);
-
-  registerCharacters(worldState);
+  system.transaction(() => {
+    registerEffects(system);
+    registerStatusEffects(system);
+    registerAbilities(system);
+    registerCharacters(system);
+  });
 };

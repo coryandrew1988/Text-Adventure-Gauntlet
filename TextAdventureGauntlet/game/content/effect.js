@@ -1,20 +1,20 @@
-export const registerEffects = (worldState, effectSystem, clock, scheduler) => {
-  const getCharacter = worldState.getCharacter;
+export const registerEffects = (system) => {
+  const getCharacter = system.world.characters.get;
 
-  const executeEffect = effectSystem.execute;
-  const registerEffect = effectSystem.register;
-  const applyStatusEffect = worldState.statusEffectSystem.apply;
+  const clock = system.clock;
+
+  const executeEffect = system.world.effects.execute;
+  const registerEffect = system.world.effects.register;
+  const applyStatusEffect = system.world.statusEffects.apply;
 
   registerEffect('delayEffect', (params, context) => {
-    scheduler.schedule(clock.getTime() + params.delay, () => {
-      worldState.transaction(() => {
-        executeEffect(params.effect, context);
-      });
+    system.scheduleTransaction(params.delay, () => {
+      executeEffect(params.effect, context);
     });
   });
 
   registerEffect('publishMessage', (params, context) => {
-    log(params.text);
+    system.uiState.createMessage(params.text);
     // TODO determine the best way to publish a message
     // TODO actually render some templates here
     // TODO use context to communicate about the results of other effects
@@ -89,6 +89,7 @@ export const registerEffects = (worldState, effectSystem, clock, scheduler) => {
 
   registerEffect('tiltTarget', (params, context) => {
     const target = getCharacter(context.targetId);
+    if (target.stats.bp <= 0) { return; }
 
     target.stats.bp -= params.tilt;
 

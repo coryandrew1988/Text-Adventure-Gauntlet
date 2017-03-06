@@ -101,9 +101,9 @@ const createComboPunchAbility = () => {
   };
 };
 
-export const registerAbilities = (worldState) => {
-  worldState.transaction(() => {
-    worldState.registerAbility(createHeavyPunchAbility());
-    worldState.registerAbility(createComboPunchAbility());
-  });
+export const registerAbilities = (system) => {
+  const registerAbility = system.world.abilities.register;
+
+  registerAbility(createHeavyPunchAbility());
+  registerAbility(createComboPunchAbility());
 };

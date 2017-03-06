@@ -1,10 +1,43 @@
 import {
-  createEvent,
-  createValueEvent
+  createClock,
+  createScheduler
 } from '../utils';
 
-import { createWorldState } from './worldState';
+import { createRealm } from './realm';
+import { createWorld } from './world';
+
 import { createUIState } from './uiState';
+
+const createAbilitySystem = (realm) => {
+  const map = new Map();
+
+  const convertFromJSON = ({ id, name, effectJSON }) => {
+    return {
+      id,
+      name,
+      effect: JSON.parse(effectJSON)
+    };
+  };
+
+  return {
+    register: ({ id, name, effect }) => {
+      realm.create('Ability', {
+        id,
+        name,
+        effectJSON: JSON.stringify(effect)
+      });
+    },
+
+    get: (id) => {
+      let result = map.get(id);
+      if (result) { return result; }
+
+      result = convertFromJSON(realm.objectForPrimaryKey('Ability', id));
+      map.set(id, result);
+      return result;
+    }
+  };
+};
 
 const createActionResolver = () => {
   const actionDefinitions = {};
@@ -25,68 +58,93 @@ const createActionResolver = () => {
 };
 
 // TEMP for easy logging in development
-const loggerEvent = createValueEvent();
 global.log = (data) => {
-  loggerEvent.publish(JSON.stringify(data, null, 2));
+  global.console.log(data);
 };
 
 export const createSystem = () => {
-  const events = {
-    action: createValueEvent(),
-    message: createValueEvent(),
-    state: createEvent()
+  const realm = createRealm();
+
+  const clock = createClock();
+  // TODO move all scheduling into this realm as well
+  const scheduler = createScheduler();
+
+  const update = () => {
+    scheduler.update(clock.getTime());
+
+    global.setTimeout(update, 50);
   };
 
-  // TEMP for easy logging in development
-  const loggerHandle = loggerEvent.getHandle();
-  loggerHandle.subscribe((text) => {
-    events.message.publish(text);
+  update();
+
+  // TODO detemine best place for this to be done (maybe the content loader?)
+  realm.write(() => {
+    realm.create('State', {
+      key: 'only',
+      targetId: null,
+      playerCharacterId: 'player' // TODO initialize this in a clean way
+    });
   });
 
-  const worldState = createWorldState(events);
-  const uiState = createUIState();
+  const uiState = createUIState(realm);
 
-  const getCharacter = worldState.getCharacter;
-  const getActiveCharacter = () => getCharacter(uiState.getState().playerCharacterId);
+  const world = createWorld(realm);
 
+  // TODO just let the ui call methods on the ui object
   const actionResolver = createActionResolver();
   actionResolver.define('useAbility', (params) => {
-    worldState.executeAbility(params.abilityId, {
+    world.abilities.execute(params.abilityId, {
       actorId: uiState.getState().playerCharacterId,
       targetId: uiState.getState().targetId
     });
   });
 
-  const actionHandle = events.action.getHandle();
-  actionHandle.subscribe((action) => {
-    actionResolver.resolve(action);
-  });
+  const transaction = (action) => {
+    realm.write(action);
+  };
+
+  // TODO
+  // system provides access to world and ui apis
+  // system also provides clock, transaction and scheduleTransaction
+  // world provides access to characters, effects, abilities, statusEffects
+  // ui provides access to actions, messages
 
   return {
-    worldState,
+    world,
+    // ui, // TODO
+
+    clock,
+
+    realm, // TODO hide this
     uiState,
-    events, // TODO remove this and expose only what needs to be exposed
-    doAction: (action) => {
-      events.action.publish(action);
+
+    transaction,
+    scheduleTransaction: (delay, action) => {
+      scheduler.schedule(clock.getTime() + delay, () => {
+        transaction(action);
+      });
     },
-    getMessageHandle: () => events.message.getHandle(),
-    getStateHandle: () => events.state.getHandle(),
+
+    doAction: (action) => {
+      actionResolver.resolve(action);
+    },
+
     addStateListener: (callback) => {
-      worldState.realm.addListener('change', callback);
-      uiState.realm.addListener('change', callback);
-      // just manage all listeners through here, and keep separate state for world and UI
+      realm.addListener('change', callback);
     },
     removeStateListener: (callback) => {
-      worldState.realm.removeListener('change', callback);
-      uiState.realm.removeListener('change', callback);
+      realm.removeListener('change', callback);
     },
-    getCharacter,
-    getActiveCharacter,
+
+    getActiveCharacter: () => {
+      return world.characters.get('player'); // TODO get the id from ui
+    },
+
     getTargetId: () => {
       return uiState.getState().targetId;
     },
     setTargetId: (id) => {
-      uiState.transaction(() => {
+      transaction(() => {
         uiState.getState().targetId = id;
       });
     }

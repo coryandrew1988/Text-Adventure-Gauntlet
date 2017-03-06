@@ -1,9 +1,9 @@
-export const registerStatusEffects = (worldState) => {
-  const getCharacter = worldState.getCharacter;
+export const registerStatusEffects = (system) => {
+  const getCharacter = system.world.characters.get;
 
-  const system = worldState.statusEffectSystem;
+  const registerStatusEffect = system.world.statusEffects.register;
 
-  system.register('prone', {
+  registerStatusEffect('prone', {
     onAdded: (characterId, params) => {
       const character = getCharacter(characterId);
 

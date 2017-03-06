@@ -1,8 +1,4 @@
-import { createRealm } from './realm';
-
-export const createUIState = () => {
-  const realm = createRealm();
-
+export const createUIState = (realm) => {
   const getState = () => realm.objectForPrimaryKey('State', 'only');
 
   return {
@@ -16,6 +12,16 @@ export const createUIState = () => {
     },
     removeStateListener: callback => {
       realm.removeListener('change', callback);
+    },
+    createMessage: (text) => {
+      realm.create('Message', {
+        id: Date.now() + '' + Math.random(),
+        time: new Date(Date.now()), // TODO tie this to the game clock?
+        text
+      });
+    },
+    getMessages: () => {
+      return realm.objects('Message').sorted('time');
     }
   };
 };

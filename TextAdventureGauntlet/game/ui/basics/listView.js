@@ -5,23 +5,17 @@ export default class ListView extends Component {
   constructor() {
     super();
 
-    this.onLayout = event => {
-      this.listViewHeight = event.nativeEvent.layout.height
-    };
-    this.onContentSizeChange = () => {
+    this.handleContentSizeChange = () => {
       if (!this.props.shouldLockToBottom) { return; }
 
-      this.refs.listView.scrollTo({
-        y: this.refs.listView.getMetrics().contentLength - this.listViewHeight
-      })
+      this.refs.listView.scrollToEnd(); return;
     };
   }
 
   render() {
     return <ReactListView {...this.props}
       ref="listView"
-      onLayout={this.onLayout}
-      onContentSizeChange={this.onContentSizeChange}
+      onContentSizeChange={this.handleContentSizeChange}
     />;
   }
 }

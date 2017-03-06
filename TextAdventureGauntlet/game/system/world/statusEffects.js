@@ -1,5 +1,6 @@
-export const createStatusEffectSystem = (statusEffectCollection) => {
+export const createStatusEffectSystem = (realm) => {
   const map = new Map();
+
   return {
     register: (key, { onAdded, onRemoved }) => {
       map.set(key, { onAdded, onRemoved });
@@ -19,7 +20,7 @@ export const createStatusEffectSystem = (statusEffectCollection) => {
 
       config.onAdded(characterId, statusEffect);
 
-      statusEffectCollection.insert(statusEffect);
+      //statusEffectCollection.insert(statusEffect);
 
       return statusEffect;
     }

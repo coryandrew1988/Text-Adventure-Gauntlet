@@ -16,46 +16,44 @@ Message.propTypes = {
   text: React.PropTypes.node
 };
 
-const intRange = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20];
-
 export default class MessageView extends Component {
   constructor() {
     super();
 
     this.state = {
       shouldLockToBottom: true,
-      messages: intRange.slice(),
       messageSource: new ListView.DataSource({
         rowHasChanged: (a, b) => a !== b
-      }).cloneWithRows(intRange)
+      })
     };
 
-    this.renderMessage = (text) => <Message text={text} />;
-  }
-
-  componentDidMount() {
-    this.messageHandle = this.props.system.getMessageHandle();
-    this.messageHandle.subscribe((text) => {
+    this.updateState = () => {
       this.setState((prevState) => {
-        const newMessages = prevState.messages.slice();
-        newMessages.push(text);
+        const newMessages = this.props.system.uiState.getMessages();
 
         return {
           shouldLockToBottom: true, // TODO check if current scroll is bottom
-          messages: newMessages,
           messageSource: prevState.messageSource.cloneWithRows(newMessages)
         };
       });
-    });
+    };
+
+    this.renderMessage = (message) => <Message text={message.text} />;
+  }
+
+  componentDidMount() { // TODO use a "withSystemState" higher-order component to eliminate this repetitive code from components
+    this.updateState();
+
+    this.props.system.addStateListener(this.updateState);
   }
 
   componentWillUnmount() {
-    this.messageHandle.dispose();
+    this.props.system.removeStateListener(this.updateState);
   }
 
   render() {
     return <MainPanel>
-      <ListView shouldLockToBottom={this.state.shouldLockToBottom} dataSource={this.state.messageSource} renderRow={this.renderMessage} />
+      <ListView shouldLockToBottom={this.state.shouldLockToBottom} dataSource={this.state.messageSource} renderRow={this.renderMessage} enableEmptySections={true} />
     </MainPanel>;
   }
 }

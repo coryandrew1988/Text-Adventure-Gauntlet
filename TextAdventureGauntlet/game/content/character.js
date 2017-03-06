@@ -47,7 +47,7 @@ const createEnemy = (id, name) => {
   };
 };
 
-export const registerCharacters = (worldState) => {
+export const registerCharacters = (system) => {
   const characters = [
     {
       id: 'temp',
@@ -76,12 +76,8 @@ export const registerCharacters = (worldState) => {
     createEnemy('enemyD', 'Enemy D')
   ];
 
-  const realm = worldState.realm;
-
-  worldState.transaction(() => {
-    characters.forEach(c => {
-      realm.create('Character', c);
-    });
+  characters.forEach(c => {
+    system.world.characters.create(c);
   });
 
   //setTimeout(() => {
@@ -90,8 +86,8 @@ export const registerCharacters = (worldState) => {
   //});
 };
 
-export const createCharacterSystem = (worldState) => { // TODO just put character logic straight into the effect code. there's currently no need for more indirection
-  const getCharacter = worldState.getCharacter;
+const createCharacterSystem = (system) => { // TODO just put character logic straight into the effect code. there's currently no need for more indirection
+  const getCharacter = system.world.characters.get;
 
   return {
     addAbility: (characterId, abilityId) => {
