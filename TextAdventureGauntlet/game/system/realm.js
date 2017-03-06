@@ -1,6 +1,9 @@
 import Realm from 'realm';
 
-import { schema } from './schema';
+import { worldSchema } from './world/schema';
+import { uiSchema } from './ui/schema';
+
+const schema = worldSchema.concat(uiSchema);
 
 // TEST PURPOSES ONLY
 Realm.clearTestState();
