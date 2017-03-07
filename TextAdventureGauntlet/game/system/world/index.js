@@ -5,8 +5,8 @@ import { createAbilitySystem } from './abilities';
 
 export const createWorld = (realm) => {
   const effects = createEffectSystem();
-  const statusEffects = createStatusEffectSystem();
-  const characters = createCharacterSystem(realm);
+  const statusEffects = createStatusEffectSystem(realm);
+  const characters = createCharacterSystem(realm, statusEffects);
   const abilities = createAbilitySystem(realm, effects);
 
   return {

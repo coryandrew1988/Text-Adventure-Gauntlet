@@ -1,4 +1,10 @@
-export const createCharacterSystem = (realm) => {
+export const createCharacterSystem = (realm, statusEffects) => {
+  const get = (id) => {
+    if (!id) { return null; }
+
+    return realm.objectForPrimaryKey('Character', id);
+  };
+
   return {
     create: (character) => {
       if (!character.id) {
@@ -7,10 +13,9 @@ export const createCharacterSystem = (realm) => {
 
       realm.create('Character', character);
     },
-    get: (id) => {
-      if (!id) { return null; }
-
-      return realm.objectForPrimaryKey('Character', id);
+    get,
+    hasAnyStatusEffectWithKey: (id, key) => {
+      return realm.objects('CharacterStatusEffect').filtered('characterId == $0 && key == $1', id, key).length > 0;
     }
   };
 };

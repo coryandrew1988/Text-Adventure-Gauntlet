@@ -1,26 +1,26 @@
-export const registerEffects = (system) => {
+export const defineEffects = (system) => {
   const getCharacter = system.world.characters.get;
 
   const clock = system.clock;
 
   const executeEffect = system.world.effects.execute;
-  const registerEffect = system.world.effects.register;
+  const defineEffect = system.world.effects.define;
   const applyStatusEffect = system.world.statusEffects.apply;
 
-  registerEffect('delayEffect', (params, context) => {
+  defineEffect('delayEffect', (params, context) => {
     system.scheduleTransaction(params.delay, () => {
       executeEffect(params.effect, context);
     });
   });
 
-  registerEffect('publishMessage', (params, context) => {
-    system.uiState.createMessage(params.text);
+  defineEffect('publishMessage', (params, context) => {
+    system.ui.messages.create(params.text);
     // TODO determine the best way to publish a message
     // TODO actually render some templates here
     // TODO use context to communicate about the results of other effects
   });
 
-  registerEffect('setActorActivity', (params, context) => {
+  defineEffect('setActorActivity', (params, context) => {
     const startTime = clock.getTime();
     const character = getCharacter(context.actorId);
 
@@ -57,19 +57,19 @@ export const registerEffects = (system) => {
     callback();
   };
 
-  registerEffect('requireActor', (params, context) => {
+  defineEffect('requireActor', (params, context) => {
     requireCharacter(context.actorId, params.status, () => {
       executeEffect(params.effect, context);
     });
   });
 
-  registerEffect('requireTarget', (params, context) => {
+  defineEffect('requireTarget', (params, context) => {
     requireCharacter(context.targetId, params.status, () => {
       executeEffect(params.effect, context);
     });
   });
 
-  registerEffect('damageTarget', (params, context) => {
+  defineEffect('damageTarget', (params, context) => {
     const actor = getCharacter(context.actorId);
     const target = getCharacter(context.targetId);
 
@@ -87,7 +87,7 @@ export const registerEffects = (system) => {
     }
   });
 
-  registerEffect('tiltTarget', (params, context) => {
+  defineEffect('tiltTarget', (params, context) => {
     const target = getCharacter(context.targetId);
     if (target.stats.bp <= 0) { return; }
 
@@ -100,7 +100,7 @@ export const registerEffects = (system) => {
     }
   });
 
-  registerEffect('attackTarget', (params, context) => {
+  defineEffect('attackTarget', (params, context) => {
     const actor = getCharacter(context.actorId);
     const target = getCharacter(context.targetId);
 

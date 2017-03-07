@@ -7,6 +7,20 @@ export const worldSchema = [{
     effectJSON: 'string'
   }
 }, {
+  name: 'RoomDescription',
+  primaryKey: 'id',
+  properties: {
+    id: 'string',
+    name: 'string'
+  }
+}, {
+  name: 'Room',
+  primaryKey: 'id',
+  properties: {
+    id: 'string',
+    description: 'RoomDescription'
+  }
+}, {
   name: 'CharacterDescription',
   primaryKey: 'id',
   properties: {
@@ -47,6 +61,17 @@ export const worldSchema = [{
     startTime: 'date',
     endTime: 'date',
     ability: 'Ability'
+  }
+}, {
+  name: 'CharacterStatusEffect',
+  primaryKey: 'id',
+  properties: {
+    id: 'string',
+    key: 'string',
+    characterId: 'string',
+    paramsJSON: 'string',
+    startTime: { type: 'date', optional: true },
+    endTime: { type: 'date', optional: true }
   }
 }, {
   name: 'Character',

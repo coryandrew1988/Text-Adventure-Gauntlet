@@ -1,5 +1,5 @@
-import { registerEffects } from './effect';
-import { registerStatusEffects } from './statusEffect';
+import { defineEffects } from './effect';
+import { defineStatusEffects } from './statusEffect';
 import { registerAbilities } from './ability';
 import { registerCharacters } from './character';
 
@@ -11,8 +11,8 @@ const createOnlyRoom = () => { // TODO move this out and expand it into a regist
 
 export const initializeSystem = (system) => {
   system.transaction(() => {
-    registerEffects(system);
-    registerStatusEffects(system);
+    defineEffects(system);
+    defineStatusEffects(system);
     registerAbilities(system);
     registerCharacters(system);
   });

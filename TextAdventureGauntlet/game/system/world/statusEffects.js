@@ -1,9 +1,11 @@
+import { createGuid } from '../../utils';
+
 export const createStatusEffectSystem = (realm) => {
   const map = new Map();
 
   return {
-    register: (key, { onAdded, onRemoved }) => {
-      map.set(key, { onAdded, onRemoved });
+    define: (key, { isAllowed, onAdded, onRemoved }) => {
+      map.set(key, { isAllowed, onAdded, onRemoved });
     },
     apply: (key, characterId, params) => {
       const config = map.get(key);
@@ -11,18 +13,23 @@ export const createStatusEffectSystem = (realm) => {
         throw new Error(`No status effect has the key "${key}".`);
       }
 
-      const statusEffect = {
-        id: 'some-new-unique-id', // TODO
+      if (config.isAllowed && !config.isAllowed(characterId, params)) {
+        return null;
+      }
+
+      config.onAdded(characterId, params);
+
+      const id = createGuid();
+
+      realm.create('CharacterStatusEffect', {
+        id,
         key,
         characterId,
-        params
-      };
+        paramsJSON: JSON.stringify(params)
+        // TODO startTime and/or duration?
+      });
 
-      config.onAdded(characterId, statusEffect);
-
-      //statusEffectCollection.insert(statusEffect);
-
-      return statusEffect;
+      return { id, key, characterId, params };
     }
   };
 };

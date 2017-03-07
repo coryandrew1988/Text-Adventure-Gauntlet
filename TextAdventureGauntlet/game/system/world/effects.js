@@ -1,5 +1,5 @@
 export const createEffectSystem = () => {
-  const effectMap = new Map();
+  const map = new Map();
 
   const execute = (effect, context) => {
     if (!effect) { return; }
@@ -12,7 +12,7 @@ export const createEffectSystem = () => {
       return;
     }
 
-    const effectCallback = effectMap.get(effect.key);
+    const effectCallback = map.get(effect.key);
     if (!effectCallback) {
       throw new Error(`There is no effect with key "${effect.key}".`);
     }
@@ -21,8 +21,8 @@ export const createEffectSystem = () => {
   };
 
   return {
-    register: (key, callback) => {
-      effectMap.set(key, callback);
+    define: (key, callback) => {
+      map.set(key, callback);
     },
     execute
   };
