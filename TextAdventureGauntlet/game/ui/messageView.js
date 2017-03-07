@@ -29,7 +29,7 @@ export default class MessageView extends Component {
 
     this.updateState = () => {
       this.setState((prevState) => {
-        const newMessages = this.props.system.uiState.getMessages();
+        const newMessages = this.props.system.ui.messages.getAll();
 
         return {
           shouldLockToBottom: true, // TODO check if current scroll is bottom

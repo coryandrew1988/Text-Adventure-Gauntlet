@@ -20,7 +20,7 @@ class EnemyPanel extends Component {
     this.handleUpdate = () => {
       this.setState({
         enemy: this.props.system.world.characters.get(this.props.characterId),
-        targetId: this.props.system.getTargetId() // TODO this should be in system.ui
+        targetId: this.props.system.ui.state.get().targetId
       });
     };
   }

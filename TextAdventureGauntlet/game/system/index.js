@@ -6,38 +6,7 @@ import {
 import { createRealm } from './realm';
 import { createWorld } from './world';
 
-import { createUIState } from './uiState';
-
-const createAbilitySystem = (realm) => {
-  const map = new Map();
-
-  const convertFromJSON = ({ id, name, effectJSON }) => {
-    return {
-      id,
-      name,
-      effect: JSON.parse(effectJSON)
-    };
-  };
-
-  return {
-    register: ({ id, name, effect }) => {
-      realm.create('Ability', {
-        id,
-        name,
-        effectJSON: JSON.stringify(effect)
-      });
-    },
-
-    get: (id) => {
-      let result = map.get(id);
-      if (result) { return result; }
-
-      result = convertFromJSON(realm.objectForPrimaryKey('Ability', id));
-      map.set(id, result);
-      return result;
-    }
-  };
-};
+import { createUI } from './ui';
 
 const createActionResolver = () => {
   const actionDefinitions = {};
@@ -77,25 +46,15 @@ export const createSystem = () => {
 
   update();
 
-  // TODO detemine best place for this to be done (maybe the content loader?)
-  realm.write(() => {
-    realm.create('State', {
-      key: 'only',
-      targetId: null,
-      playerCharacterId: 'player' // TODO initialize this in a clean way
-    });
-  });
-
-  const uiState = createUIState(realm);
-
   const world = createWorld(realm);
+  const ui = createUI(realm, world);
 
   // TODO just let the ui call methods on the ui object
   const actionResolver = createActionResolver();
   actionResolver.define('useAbility', (params) => {
     world.abilities.execute(params.abilityId, {
-      actorId: uiState.getState().playerCharacterId,
-      targetId: uiState.getState().targetId
+      actorId: ui.state.get().playerCharacterId,
+      targetId: ui.state.get().targetId
     });
   });
 
@@ -111,22 +70,15 @@ export const createSystem = () => {
 
   return {
     world,
-    // ui, // TODO
+    ui,
 
     clock,
-
-    realm, // TODO hide this
-    uiState,
 
     transaction,
     scheduleTransaction: (delay, action) => {
       scheduler.schedule(clock.getTime() + delay, () => {
         transaction(action);
       });
-    },
-
-    doAction: (action) => {
-      actionResolver.resolve(action);
     },
 
     addStateListener: (callback) => {
@@ -140,12 +92,9 @@ export const createSystem = () => {
       return world.characters.get('player'); // TODO get the id from ui
     },
 
-    getTargetId: () => {
-      return uiState.getState().targetId;
-    },
     setTargetId: (id) => {
       transaction(() => {
-        uiState.getState().targetId = id;
+        ui.state.get().targetId = id;
       });
     }
   };

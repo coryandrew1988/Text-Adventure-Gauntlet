@@ -20,7 +20,7 @@ const buttonStyle = {
 
 class ActionButton extends Component {
   doAction() {
-    this.props.system.doAction(this.props.action);
+    this.props.action(this.props.system.ui.action);
   }
 
   render() {
@@ -33,7 +33,7 @@ class ActionButton extends Component {
 
 ActionButton.propTypes = {
   system: React.PropTypes.object.isRequired,
-  action: React.PropTypes.object.isRequired,
+  action: React.PropTypes.func.isRequired,
   label: React.PropTypes.string.isRequired,
 };
 
@@ -49,11 +49,8 @@ export default class ActionView extends Component {
       key={i}
       system={this.props.system}
       label={i % 2 === 0 ? 'Heavy Punch' : 'Combo Punch'}
-      action={{
-        key: 'useAbility',
-        params: {
-          abilityId: i % 2 === 0 ? 'heavyPunch' : 'comboPunch'
-        }
+      action={action => {
+        action.useAbility(i % 2 === 0 ? 'heavyPunch' : 'comboPunch');
       }}
     />;
   }
