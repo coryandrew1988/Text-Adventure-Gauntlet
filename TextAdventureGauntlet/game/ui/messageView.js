@@ -6,58 +6,39 @@ import {
   MainPanel
 } from './basics';
 
-class Message extends Component {
-  render() { // TODO Message should be responsible for rendering message templates.
-    return <Text>{this.props.text}</Text>
-  }
-}
+import { withSystemState } from './hoc';
 
-Message.propTypes = {
-  text: React.PropTypes.node
-};
+const renderMessage = (message) => <Text>{message.text}</Text>;
 
-export default class MessageView extends Component {
-  constructor() {
-    super();
-
-    this.state = {
-      shouldLockToBottom: true,
-      messageSource: new ListView.DataSource({
-        rowHasChanged: (a, b) => a !== b
-      })
-    };
-
-    this.updateState = () => {
-      this.setState((prevState) => {
-        const newMessages = this.props.system.ui.messages.getAll();
-
-        return {
-          shouldLockToBottom: true, // TODO check if current scroll is bottom
-          messageSource: prevState.messageSource.cloneWithRows(newMessages)
-        };
-      });
-    };
-
-    this.renderMessage = (message) => <Message text={message.text} />;
-  }
-
-  componentDidMount() { // TODO use a "withSystemState" higher-order component to eliminate this repetitive code from components
-    this.updateState();
-
-    this.props.system.addStateListener(this.updateState);
-  }
-
-  componentWillUnmount() {
-    this.props.system.removeStateListener(this.updateState);
-  }
-
+class MessageView extends Component {
   render() {
     return <MainPanel>
-      <ListView shouldLockToBottom={this.state.shouldLockToBottom} dataSource={this.state.messageSource} renderRow={this.renderMessage} enableEmptySections={true} />
+      <ListView
+        shouldLockToBottom={this.props.shouldLockToBottom}
+        dataSource={this.props.messageSource}
+        renderRow={renderMessage}
+        enableEmptySections={true} // TODO stop needing this; will a React update help?
+      />
     </MainPanel>;
   }
 }
 
 MessageView.propTypes = {
-  system: React.PropTypes.object.isRequired
+  shouldLockToBottom: React.PropTypes.bool,
+  messageSource: React.PropTypes.object.isRequired
 };
+
+export default withSystemState(MessageView, (system, prevState) => {
+  const newMessages = system.ui.messages.getAll();
+  const messageSource = (
+    prevState.messageSource ||
+    new ListView.DataSource({
+      rowHasChanged: (a, b) => a !== b
+    })
+  ).cloneWithRows(newMessages);
+
+  return {
+    shouldLockToBottom: true, // TODO check if current scroll is bottom
+    messageSource
+  };
+});
