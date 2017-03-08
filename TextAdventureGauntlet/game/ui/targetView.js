@@ -18,23 +18,24 @@ const textStyle = {
 class EnemyPanel extends Component {
   render() {
     const enemy = this.props.enemy;
-    const isTarget = this.props.targetId === this.props.enemy.id;
+    const isTarget = this.props.isTarget;
 
-    return <PanelButton onPress={() => {
-      this.props.system.ui.state.setTargetId(this.props.enemy.id);
-    }} style={{
-      position: 'relative',
-      top: isTarget ? -4 : 0,
-      flex: 1,
-      margin: 2,
-      marginTop: 4,
-      padding: 2,
-      borderStyle: 'solid',
-      borderWidth: 2,
-      borderRadius: 4,
-      borderColor: isTarget ? '#fff' : '#888',
-      backgroundColor: isTarget ? '#332' : '#000'
-    }}>
+    return <PanelButton
+      onPress={this.props.onPress}
+      style={{
+        position: 'relative',
+        top: isTarget ? -4 : 0,
+        flex: 1,
+        margin: 2,
+        marginTop: 4,
+        padding: 2,
+        borderStyle: 'solid',
+        borderWidth: 2,
+        borderRadius: 4,
+        borderColor: isTarget ? '#fff' : '#888',
+        backgroundColor: isTarget ? '#332' : '#000'
+      }}
+    >
       <Text>{enemy.description.name}</Text>
       <StatusMeterBarPanel
         character={enemy}
@@ -45,31 +46,34 @@ class EnemyPanel extends Component {
 }
 
 EnemyPanel.propTypes = {
-  system: React.PropTypes.object.isRequired,
-  enemyId: React.PropTypes.string.isRequired,
   enemy: React.PropTypes.object.isRequired,
-  targetId: React.PropTypes.string
+  isTarget: React.PropTypes.bool,
+  onPress: React.PropTypes.func
 };
+
+const EnemyPanelWithSystemState = withSystemState(
+  EnemyPanel,
+  (system, prevState, props) => {
+    const enemy = system.world.characters.get(props.enemyId);
+
+    return {
+      enemy,
+      isTarget: system.ui.state.get().targetId === enemy.id,
+      onPress: () => {
+        system.ui.state.setTargetId(enemy.id);
+      }
+    };
+  }
+);
 
 const rowStyle = {
   flex: 1,
   flexDirection: 'row'
 };
 
-const EnemyPanelWithSystemState = withSystemState(
-  EnemyPanel,
-  (system, prevState, props) => {
-    return {
-      system,
-      enemy: system.world.characters.get(props.enemyId),
-      targetId: system.ui.state.get().targetId
-    };
-  }
-);
-
 export default class TargetView extends Component {
   render() {
-    // TODO use a room to find all possible targets
+    // TODO use a room to find allowed targets
     const ids = ['enemyA', 'enemyB', 'enemyC', 'enemyD', 'temp'];
 
     return <Panel style={{ flex: 1 }}>

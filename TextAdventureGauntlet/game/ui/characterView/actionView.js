@@ -5,6 +5,8 @@ import {
   TextButton
 } from '../basics';
 
+import { withSystemState } from '../hoc';
+
 const buttonStyle = {
   flex: 1,
   margin: 2,
@@ -42,10 +44,10 @@ const rowStyle = {
   flexDirection: 'row'
 };
 
-export default class ActionView extends Component {
+class ActionView extends Component {
   renderButton(i) {
-    const system = this.props.system;
-    const character = system.getActiveCharacter(); // TODO use state for this
+    const character = this.props.character;
+
     if (i >= character.abilities.length) {
       return null;
     }
@@ -76,5 +78,13 @@ export default class ActionView extends Component {
 }
 
 ActionView.propTypes = {
-  system: React.PropTypes.object.isRequired
+  system: React.PropTypes.object.isRequired,
+  character: React.PropTypes.object.isRequired
 };
+
+export default withSystemState(ActionView, (system) => {
+  return {
+    system,
+    character: system.getActiveCharacter()
+  };
+});
