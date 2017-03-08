@@ -6,6 +6,8 @@ import {
 
 import { StatusMeterBarPanel } from '../special';
 
+import { withSystemState } from '../hoc';
+
 import ActionView from './actionView';
 
 const textStyle = {
@@ -13,32 +15,12 @@ const textStyle = {
   fontWeight: 'bold'
 };
 
-export default class CharacterView extends Component {
-  constructor() {
-    super();
-
-    this.handleUpdate = () => {
-      this.setState({
-        character: this.props.system.getActiveCharacter()
-      });
-    };
-  }
-
-  componentWillMount() {
-    this.handleUpdate();
-
-    this.props.system.addStateListener(this.handleUpdate);
-  }
-
-  componentWillUnmount() {
-    this.props.system.removeStateListener(this.handleUpdate);
-  }
-
+class CharacterView extends Component {
   render() {
     return <MainPanel style={{ flex: 1 }}>
       <ActionView style={{ flex: 4 }} system={this.props.system} />
       <StatusMeterBarPanel
-        character={this.state.character}
+        character={this.props.character}
         textStyle={textStyle}
         useLabels={true}
       />
@@ -47,5 +29,13 @@ export default class CharacterView extends Component {
 }
 
 CharacterView.propTypes = {
-  system: React.PropTypes.object.isRequired
+  system: React.PropTypes.object.isRequired,
+  character: React.PropTypes.object.isRequired
 };
+
+export default withSystemState(CharacterView, (system) => {
+  return {
+    system,
+    character: system.getActiveCharacter()
+  };
+});

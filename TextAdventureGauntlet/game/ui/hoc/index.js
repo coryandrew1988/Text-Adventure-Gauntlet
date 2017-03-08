@@ -10,7 +10,7 @@ const withSystemState = (WrappedComponent, computeSystemState) => {
 
       this.updateState = () => {
         this.setState((prevState) => {
-          return computeSystemState(this.props.system, prevState);
+          return computeSystemState(this.props.system, prevState, this.props);
         });
       };
     }
@@ -30,7 +30,7 @@ const withSystemState = (WrappedComponent, computeSystemState) => {
         return null;
       }
 
-      const wrappedProps = { ...this.state, ...this.props };
+      const wrappedProps = { ...this.props, ...this.state };
 
       return <WrappedComponent {...wrappedProps} />;
     }

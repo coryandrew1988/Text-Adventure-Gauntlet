@@ -8,39 +8,20 @@ import {
 
 import { StatusMeterBarPanel } from './special';
 
+import { withSystemState } from './hoc';
+
 const textStyle = {
   fontSize: 12,
   fontWeight: 'bold'
 };
 
 class EnemyPanel extends Component {
-  constructor() {
-    super();
-
-    this.handleUpdate = () => {
-      this.setState({
-        enemy: this.props.system.world.characters.get(this.props.characterId),
-        targetId: this.props.system.ui.state.get().targetId
-      });
-    };
-  }
-
-  componentWillMount() {
-    this.handleUpdate();
-
-    this.props.system.addStateListener(this.handleUpdate);
-  }
-
-  componentWillUnmount() {
-    this.props.system.removeStateListener(this.handleUpdate);
-  }
-
   render() {
-    const enemy = this.state.enemy;
-    const isTarget = this.state.targetId === this.props.characterId;
+    const enemy = this.props.enemy;
+    const isTarget = this.props.targetId === this.props.enemy.id;
 
     return <PanelButton onPress={() => {
-      this.props.system.ui.state.setTargetId(this.props.characterId);
+      this.props.system.ui.state.setTargetId(this.props.enemy.id);
     }} style={{
       position: 'relative',
       top: isTarget ? -4 : 0,
@@ -65,13 +46,26 @@ class EnemyPanel extends Component {
 
 EnemyPanel.propTypes = {
   system: React.PropTypes.object.isRequired,
-  characterId: React.PropTypes.string.isRequired,
+  enemyId: React.PropTypes.string.isRequired,
+  enemy: React.PropTypes.object.isRequired,
+  targetId: React.PropTypes.string
 };
 
 const rowStyle = {
   flex: 1,
   flexDirection: 'row'
 };
+
+const EnemyPanelWithSystemState = withSystemState(
+  EnemyPanel,
+  (system, prevState, props) => {
+    return {
+      system,
+      enemy: system.world.characters.get(props.enemyId),
+      targetId: system.ui.state.get().targetId
+    };
+  }
+);
 
 export default class TargetView extends Component {
   render() {
@@ -90,7 +84,10 @@ export default class TargetView extends Component {
               const id = ids[i];
 
               return <Panel key={i} style={rowStyle}>
-                <EnemyPanel system={this.props.system} characterId={id} />
+                <EnemyPanelWithSystemState
+                  system={this.props.system}
+                  enemyId={id}
+                />
               </Panel>;
             })}
           </Panel>;
