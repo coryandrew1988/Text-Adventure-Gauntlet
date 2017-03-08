@@ -1,22 +1,17 @@
 export const createAbilitySystem = (realm, effectSystem) => {
-  const map = new Map();
+  const effectMap = new WeakMap();
 
-  const convertFromJSON = ({ id, name, effectJSON }) => {
-    return {
-      id,
-      name,
-      effect: JSON.parse(effectJSON)
-    };
+  const getEffect = (ability) => {
+    let effect = effectMap.get(ability)
+    if (!effect) {
+      effect = JSON.parse(ability.effectJSON);
+      effectMap.set(ability, effect);
+    }
+
+    return effect;
   };
 
-  const get = (id) => {
-    let result = map.get(id);
-    if (result) { return result; }
-
-    result = convertFromJSON(realm.objectForPrimaryKey('Ability', id));
-    map.set(id, result);
-    return result;
-  };
+  const get = id => realm.objectForPrimaryKey('Ability', id);
 
   return {
     register: ({ id, name, effect }) => {
@@ -27,12 +22,12 @@ export const createAbilitySystem = (realm, effectSystem) => {
       });
     },
 
+    get,
+
     execute: (id, context) => {
       const ability = get(id);
       // TODO determine the optimal places for transactions
-      realm.write(() => {
-        effectSystem.execute(ability.effect, context);
-      });
+      effectSystem.execute(getEffect(ability), context);
     }
   };
 };

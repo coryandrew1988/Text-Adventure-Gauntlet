@@ -1,6 +1,7 @@
 // TODO later, we'll instead load characters dyanamically
 
-const createPlayer = () => {
+const createPlayer = (system) => {
+  const getAbility = system.world.abilities.get;
   return {
     id: 'player',
     description: {
@@ -20,7 +21,8 @@ const createPlayer = () => {
       resistance: 0,
       accuracy: 0,
       evasion: 50
-    }
+    },
+    abilities: [getAbility('comboPunch'), getAbility('heavyPunch')]
   };
 };
 
@@ -69,7 +71,7 @@ export const registerCharacters = (system) => {
         evasion: 0
       }
     },
-    createPlayer(),
+    createPlayer(system),
     createEnemy('enemyA', 'Enemy A'),
     createEnemy('enemyB', 'Enemy B'),
     createEnemy('enemyC', 'Enemy C'),

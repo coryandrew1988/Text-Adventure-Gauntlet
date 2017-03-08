@@ -20,7 +20,7 @@ const buttonStyle = {
 
 class ActionButton extends Component {
   doAction() {
-    this.props.action(this.props.system.ui.action);
+    this.props.action(this.props.system.action);
   }
 
   render() {
@@ -44,13 +44,20 @@ const rowStyle = {
 
 export default class ActionView extends Component {
   renderButton(i) {
-    // TODO get actionConfig from game ui config
+    const system = this.props.system;
+    const character = system.getActiveCharacter(); // TODO use state for this
+    if (i >= character.abilities.length) {
+      return null;
+    }
+
+    const ability = character.abilities[i];
+
     return <ActionButton
       key={i}
       system={this.props.system}
-      label={i % 2 === 0 ? 'Heavy Punch' : 'Combo Punch'}
+      label={ability.name}
       action={action => {
-        action.useAbility(i % 2 === 0 ? 'heavyPunch' : 'comboPunch');
+        action.useAbility(ability.id);
       }}
     />;
   }

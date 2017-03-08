@@ -13,19 +13,16 @@ export const defineStatusEffects = (system) => {
       const character = getCharacter(characterId);
 
       character.stats.resistance -= 2;
-      // TODO complete this
     },
     onRemoved: (characterId, params) => {
       const character = getCharacter(characterId);
 
       character.stats.resistance += 2;
-      // TODO complete this
     }
   });
 
   defineStatusEffect('poisoned', {
     onAdded: (characterId, params) => {
-      // TODO scheduleTransaction
       system.scheduleTransaction(6000, () => {
         const character = getCharacter(characterId);
         character.stats.hp -= params.value;

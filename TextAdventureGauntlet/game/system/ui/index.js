@@ -1,4 +1,4 @@
-export const createUI = (realm, world) => {
+export const createUI = (realm) => {
   // TODO detemine best place to create initial UI state (maybe the content loader?)
   realm.write(() => {
     realm.create('State', {
@@ -32,18 +32,8 @@ export const createUI = (realm, world) => {
     }
   };
 
-  const action = {
-    useAbility: (abilityId) => {
-      world.abilities.execute(abilityId, {
-        actorId: state.get().playerCharacterId,
-        targetId: state.get().targetId
-      });
-    }
-  };
-
   return {
     messages,
-    state,
-    action
+    state
   };
 };

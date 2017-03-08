@@ -40,7 +40,7 @@ class EnemyPanel extends Component {
     const isTarget = this.state.targetId === this.props.characterId;
 
     return <PanelButton onPress={() => {
-      this.props.system.setTargetId(this.props.characterId);
+      this.props.system.ui.state.setTargetId(this.props.characterId);
     }} style={{
       position: 'relative',
       top: isTarget ? -4 : 0,

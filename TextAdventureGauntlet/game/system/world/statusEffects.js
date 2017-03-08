@@ -17,19 +17,17 @@ export const createStatusEffectSystem = (realm) => {
         return null;
       }
 
-      config.onAdded(characterId, params);
-
-      const id = createGuid();
-
-      realm.create('CharacterStatusEffect', {
-        id,
+      const statusEffect = realm.create('CharacterStatusEffect', {
+        id: createGuid(),
         key,
         characterId,
         paramsJSON: JSON.stringify(params)
         // TODO startTime and/or duration?
       });
 
-      return { id, key, characterId, params };
+      config.onAdded(characterId, params, statusEffect);
+
+      return statusEffect;
     }
   };
 };

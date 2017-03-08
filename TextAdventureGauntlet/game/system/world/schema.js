@@ -81,6 +81,7 @@ export const worldSchema = [{
     //room: 'Room',
     description: 'CharacterDescription',
     stats: 'CharacterStats',
-    activity: 'CharacterActivity'
+    activity: 'CharacterActivity',
+    abilities: { type: 'list', objectType: 'Ability' }
   }
 }];
