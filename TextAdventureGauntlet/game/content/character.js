@@ -2,8 +2,10 @@
 
 const createPlayer = (system) => {
   const getAbility = system.world.abilities.get;
+  const getRoom = system.world.rooms.get;
   return {
     id: 'player',
+    room: getRoom('only'),
     description: {
       id: 'playerDescription',
       name: 'Player'
@@ -26,9 +28,12 @@ const createPlayer = (system) => {
   };
 };
 
-const createEnemy = (id, name) => {
+const createEnemy = (system, id, name) => {
+  const getRoom = system.world.rooms.get;
   return {
     id,
+    priority: 0,
+    room: getRoom('only'),
     description: {
       id: id + 'Description',
       name
@@ -49,74 +54,44 @@ const createEnemy = (id, name) => {
   };
 };
 
+const createTemp = (system) => {
+  const getRoom = system.world.rooms.get;
+
+  return {
+    id: 'temp',
+    priority: 1,
+    room: getRoom('second'),
+    description: {
+      id: 'tempDescription',
+      name: 'The Temporary One'
+    },
+    stats: {
+      id: 'tempStats',
+      maxHP: 10,
+      hp: 10,
+      maxMP: 3,
+      mp: 3,
+      maxBP: 4,
+      bp: 4,
+      power: 0,
+      resistance: 0,
+      accuracy: 0,
+      evasion: 0
+    }
+  };
+};
+
 export const registerCharacters = (system) => {
   const characters = [
-    {
-      id: 'temp',
-      description: {
-        id: 'tempDescription',
-        name: 'The Temporary One'
-      },
-      stats: {
-        id: 'tempStats',
-        maxHP: 10,
-        hp: 10,
-        maxMP: 3,
-        mp: 3,
-        maxBP: 2,
-        bp: 2,
-        power: 0,
-        resistance: 0,
-        accuracy: 0,
-        evasion: 0
-      }
-    },
+    createTemp(system),
     createPlayer(system),
-    createEnemy('enemyA', 'Enemy A'),
-    createEnemy('enemyB', 'Enemy B'),
-    createEnemy('enemyC', 'Enemy C'),
-    createEnemy('enemyD', 'Enemy D')
+    createEnemy(system, 'enemyA', 'Enemy A'),
+    createEnemy(system, 'enemyB', 'Enemy B'),
+    createEnemy(system, 'enemyC', 'Enemy C'),
+    createEnemy(system, 'enemyD', 'Enemy D')
   ];
 
   characters.forEach(c => {
     system.world.characters.create(c);
   });
-
-  //setTimeout(() => {
-    //const characters = realm.objects('Character');
-    //log(characters.map(v=>v));
-  //});
-};
-
-const createCharacterSystem = (system) => { // TODO just put character logic straight into the effect code. there's currently no need for more indirection
-  const getCharacter = system.world.characters.get;
-
-  return {
-    addAbility: (characterId, abilityId) => {
-      const character = getCharacter(characterId);
-      const abilities = character.abilities;
-
-      if (abilities[abilityId]) { // could do a one-liner, but nah
-        abilities[abilityId] += 1;
-      } else {
-        abilities[abilityId] = 1;
-      }
-    },
-    removeAbility: (characterId, abilityId) => {
-      const character = getCharacter(characterId);
-      const abilities = character.abilities;
-
-      if (abilities[abilityId]) { // could do a one-liner, but nah
-        abilities[abilityId] -= 1;
-
-        if (abilities[abilityId] <= 0) {
-          delete abilities[abilityId];
-        }
-      }
-    },
-    modifyStat: (characterId, statKey, value) => {
-      const character = getCharacter(characterId);
-      character.stats[statKey] += value;
-    }
-  };
 };

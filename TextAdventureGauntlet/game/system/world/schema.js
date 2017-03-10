@@ -20,6 +20,15 @@ export const worldSchema = [{
     id: 'string',
     description: 'RoomDescription'
   }
+  // TODO paths, items, recurring effects, status effects
+}, {
+  name: 'Path',
+  primaryKey: 'id',
+  properties: {
+    id: 'string',
+    room: 'Room',
+    targetRoom: 'Room'
+  }
 }, {
   name: 'CharacterDescription',
   primaryKey: 'id',
@@ -78,7 +87,8 @@ export const worldSchema = [{
   primaryKey: 'id',
   properties: {
     id: 'string',
-    //room: 'Room',
+    priority: { type: 'int', optional: true },
+    room: 'Room',
     description: 'CharacterDescription',
     stats: 'CharacterStats',
     activity: 'CharacterActivity',

@@ -71,10 +71,10 @@ const rowStyle = {
   flexDirection: 'row'
 };
 
-export default class TargetView extends Component {
+class TargetView extends Component {
   render() {
     // TODO use a room to find allowed targets
-    const ids = ['enemyA', 'enemyB', 'enemyC', 'enemyD', 'temp'];
+    const ids = this.props.ids;
 
     return <Panel style={{ flex: 1 }}>
       <Panel style={{ flex: 1 }}>
@@ -85,12 +85,10 @@ export default class TargetView extends Component {
                 return null;
               }
 
-              const id = ids[i];
-
-              return <Panel key={i} style={rowStyle}>
+              return <Panel key={ids[i]} style={rowStyle}>
                 <EnemyPanelWithSystemState
                   system={this.props.system}
-                  enemyId={id}
+                  enemyId={ids[i]}
                 />
               </Panel>;
             })}
@@ -102,5 +100,17 @@ export default class TargetView extends Component {
 }
 
 TargetView.propTypes = {
-  system: React.PropTypes.object.isRequired
+  system: React.PropTypes.object.isRequired,
+  ids: React.PropTypes.arrayOf(React.PropTypes.string.isRequired).isRequired
 };
+
+export default withSystemState(TargetView, (system) => {
+  const activeCharacter = system.getActiveCharacter();
+
+  return {
+    ids: (
+      system.world.characters.getVisible(activeCharacter)
+      .map(c => (log(c.priority), c.id))
+    )
+  }
+});

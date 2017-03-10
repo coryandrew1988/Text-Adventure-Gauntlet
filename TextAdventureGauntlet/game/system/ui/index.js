@@ -9,13 +9,11 @@ export const createUI = (realm) => {
   });
 
   const messages = {
-    create: (text) => {
-      realm.create('Message', {
-        id: Date.now() + '' + Math.random(),
-        time: new Date(Date.now()), // TODO tie this to the game clock?
-        text
-      });
-    },
+    create: text => realm.create('Message', {
+      id: Date.now() + '' + Math.random(),
+      time: new Date(Date.now()), // TODO tie this to the game clock?
+      text
+    }),
     getAll: () => {
       return realm.objects('Message').sorted('time');
     }

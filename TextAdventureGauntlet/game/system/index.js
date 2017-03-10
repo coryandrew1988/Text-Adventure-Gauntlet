@@ -35,6 +35,10 @@ export const createSystem = () => {
     realm.write(action);
   };
 
+  const getActiveCharacter = () => {
+    return world.characters.get(ui.state.get().playerCharacterId);
+  };
+
   const action = {
     useAbility: (abilityId) => {
       transaction(() => {
@@ -42,6 +46,13 @@ export const createSystem = () => {
           actorId: ui.state.get().playerCharacterId,
           targetId: ui.state.get().targetId
         });
+      });
+    },
+    travel: (room) => {
+      transaction(() => {
+        const activeCharacter = getActiveCharacter();
+
+        activeCharacter.room = room;
       });
     }
   };
@@ -68,8 +79,6 @@ export const createSystem = () => {
 
     action,
 
-    getActiveCharacter: () => {
-      return world.characters.get(ui.state.get().playerCharacterId);
-    }
+    getActiveCharacter
   };
 };

@@ -7,6 +7,7 @@ import {
 import TargetView from './targetView';
 import MessageView from './messageView';
 import CharacterView from './characterView';
+import RoomPanel from './roomPanel';
 
 const style = {
   position: 'relative',
@@ -32,6 +33,9 @@ export default class UI extends Component {
       }}></Panel>
       <Panel style={{ flex: 2, zIndex: -100 }}>
         <MessageView system={this.props.system} />
+      </Panel>
+      <Panel style={{ flex: 1, zIndex: -100 }}>
+        <RoomPanel system={this.props.system} />
       </Panel>
       <Panel style={{ flex: 1, zIndex: 100 }}>
         <TargetView system={this.props.system} />
