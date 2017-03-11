@@ -60,7 +60,10 @@ const EnemyPanelWithSystemState = withSystemState(
       enemy,
       isTarget: system.ui.state.get().targetId === enemy.id,
       onPress: () => {
-        system.ui.state.setTargetId(enemy.id);
+        system.ui.setTarget({
+          type: 'character',
+          id: enemy.id
+        });
       }
     };
   }
@@ -110,7 +113,7 @@ export default withSystemState(TargetView, (system) => {
   return {
     ids: (
       system.world.characters.getVisible(activeCharacter)
-      .map(c => (log(c.priority), c.id))
+      .map(c => c.id)
     )
   }
 });

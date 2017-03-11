@@ -1,30 +1,44 @@
 import {
   React,
   Component,
-  Text,
-  MainPanel,
-  TextButton
+  MainPanel
 } from '../basics';
 
 import { withSystemState } from '../hoc';
 
+import CharacterTargetPanel from './characterTargetPanel';
+
+const targetRendererMap = new Map();
+
+targetRendererMap.set('character', (system, target) => {
+  return <CharacterTargetPanel system={system} id={target.id} />
+});
+
 class TargetPanel extends Component {
+  renderTarget() {
+    const target = this.props.target;
+    if (target == null) { return null; }
+
+    const targetRenderer = targetRendererMap.get(target.type);
+    if (targetRenderer == null) { return null; }
+
+    return targetRenderer(this.props.system, target);
+  }
+
   render() {
     return <MainPanel>
+      {this.renderTarget()}
     </MainPanel>;
   }
 }
 
 TargetPanel.propTypes = {
-  room: React.PropTypes.object.isRequired,
-  paths: React.PropTypes.arrayOf(React.PropTypes.object.isRequired).isRequired,
-  onPressPath: React.PropTypes.func.isRequired
+  system: React.PropTypes.object.isRequired,
+  target: React.PropTypes.object
 };
 
 export default withSystemState(TargetPanel, (system) => {
   const target = system.ui.getTarget();
 
-  return {
-    target
-  };
+  return { system, target };
 });

@@ -30,8 +30,17 @@ export const createUI = (realm) => {
     }
   };
 
+  let target = JSON.parse(getState().targetJSON);
+
   return {
     messages,
-    state
+    state,
+    getTarget: () => target,
+    setTarget: (value) => {
+      realm.write(() => {
+        target = value;
+        getState().targetJSON = JSON.stringify(target);
+      });
+    }
   };
 };
