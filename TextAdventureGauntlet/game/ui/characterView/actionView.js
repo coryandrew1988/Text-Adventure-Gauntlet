@@ -27,7 +27,7 @@ class ActionButton extends Component {
 
   render() {
     // TODO if action doesn't exist, render a disabled button, or just empty space
-    return <TextButton style={buttonStyle} onPress={() => {
+    return <TextButton style={buttonStyle} textStyle={{ color: '#000' }} onPress={() => {
       this.doAction();
     }}>{this.props.label}</TextButton>
   }

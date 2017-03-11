@@ -23,17 +23,14 @@ const style = {
 export default class UI extends Component {
   render() {
     return <Panel style={style}>
-      <Panel style={{ flex: 2 }}>
+      <Panel style={{ flex: 1 }}>
         <CharacterView system={this.props.system} />
       </Panel>
       <Panel style={{ flex: 2 }}>
         <MessageView system={this.props.system} />
       </Panel>
-      <Panel style={{ flex: 1 }}>
+      <Panel style={{ flex: 2 }}>
         <RoomPanel system={this.props.system} />
-      </Panel>
-      <Panel style={{ flex: 1 }}>
-        <TargetView system={this.props.system} />
       </Panel>
       <Panel style={{ flex: 1 }}>
         <TargetPanel system={this.props.system} />

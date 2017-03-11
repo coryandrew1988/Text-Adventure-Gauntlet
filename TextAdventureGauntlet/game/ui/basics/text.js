@@ -16,5 +16,5 @@ export default class Text extends Component {
 
 Text.propTypes = {
   children: React.PropTypes.node,
-  style: React.PropTypes.object
+  style: React.PropTypes.any
 };

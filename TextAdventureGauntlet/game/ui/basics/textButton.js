@@ -5,14 +5,14 @@ import Text from './text';
 
 const textStyle = {
   fontWeight: 'bold',
-  color: '#000',
+  //color: '#000',
   alignItems: 'center'
 };
 
 export default class TextButton extends Component {
   render() {
     return <PanelButton {...this.props}>
-      <Text style={textStyle}>
+      <Text style={[textStyle, this.props.textStyle]}>
         {this.props.children}
       </Text>
     </PanelButton>
@@ -20,5 +20,6 @@ export default class TextButton extends Component {
 }
 
 TextButton.propTypes = {
-  children: React.PropTypes.node
+  children: React.PropTypes.node,
+  textStyle: React.PropTypes.object
 };

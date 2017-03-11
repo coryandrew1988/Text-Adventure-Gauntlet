@@ -4,9 +4,11 @@ import {
   Text,
   MainPanel,
   TextButton
-} from './basics';
+} from '../basics';
 
-import { withSystemState } from './hoc';
+import { withSystemState } from '../hoc';
+
+import CharacterListPanel from './characterListPanel';
 
 class RoomPanel extends Component {
   render() {
@@ -26,11 +28,13 @@ class RoomPanel extends Component {
       >
         {path.targetRoom.description.name}
       </TextButton>)}
+      <CharacterListPanel system={this.props.system} />
     </MainPanel>;
   }
 }
 
 RoomPanel.propTypes = {
+  system: React.PropTypes.object.isRequired,
   room: React.PropTypes.object.isRequired,
   paths: React.PropTypes.arrayOf(React.PropTypes.object.isRequired).isRequired,
   onPressPath: React.PropTypes.func.isRequired
@@ -42,6 +46,7 @@ export default withSystemState(RoomPanel, (system) => {
   const paths = system.world.rooms.getPaths(room).slice();
 
   return {
+    system,
     room,
     paths,
     onPressPath: (path) => {
