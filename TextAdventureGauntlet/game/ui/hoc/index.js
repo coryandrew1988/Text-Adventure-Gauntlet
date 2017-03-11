@@ -3,14 +3,16 @@ import {
   Component
 } from '../basics';
 
-const withSystemState = (WrappedComponent, computeSystemState) => {
+const withSystemState = (WrappedComponent, computerWrappedProps) => {
   class ComponentWithSystemState extends Component {
     constructor() {
       super();
 
+
+
       this.updateState = () => {
         this.setState((prevState) => {
-          return computeSystemState(this.props.system, prevState, this.props);
+          return computerWrappedProps(this.props.system, prevState, this.props);
         });
       };
     }
@@ -23,6 +25,12 @@ const withSystemState = (WrappedComponent, computeSystemState) => {
 
     componentWillUnmount() {
       this.props.system.removeStateListener(this.updateState);
+    }
+
+    componentWillReceiveProps(nextProps) {
+      this.setState((prevState) => {
+        return computerWrappedProps(this.props.system, prevState, nextProps);
+      });
     }
 
     render() {
