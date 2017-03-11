@@ -12,7 +12,11 @@ import CharacterListPanel from './characterListPanel';
 
 class RoomPanel extends Component {
   render() {
-    return <MainPanel>
+    return <MainPanel style={{
+      margin: 1,
+      borderWidth: 2,
+      borderColor: '#bbb'
+    }}>
       <Text>{this.props.room.description.name}</Text>
       {this.props.paths.map(path => <TextButton
         key={path.id}

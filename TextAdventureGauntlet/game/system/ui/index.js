@@ -3,7 +3,6 @@ export const createUI = (realm) => {
   realm.write(() => {
     realm.create('State', {
       key: 'only',
-      targetId: null,
       playerCharacterId: 'player' // TODO initialize this in a clean way
     });
   });
@@ -22,12 +21,7 @@ export const createUI = (realm) => {
   const getState = () => realm.objectForPrimaryKey('State', 'only');
 
   const state = {
-    get: getState, // TODO flatten out the state properties into here
-    setTargetId: (id) => {
-      realm.write(() => {
-        getState().targetId = id;
-      });
-    }
+    get: getState // TODO flatten out the state properties into here
   };
 
   let target = JSON.parse(getState().targetJSON);

@@ -12,7 +12,6 @@ export const uiSchema = [{
   properties: {
     key: 'string',
     targetJSON: { type: 'string', optional: true },
-    targetId: { type: 'string', optional: true }, // TODO remove
     playerCharacterId: { type: 'string', optional: true }
   }
 }];

@@ -3,11 +3,13 @@ import {
   Component,
   Text,
   Panel
-} from '../basics';
+} from '../../basics';
 
-import { StatusMeterBarPanel } from '../special';
+import { StatusMeterBarPanel } from '../../special';
 
-import { withSystemState } from '../hoc';
+import { withSystemState } from '../../hoc';
+
+import TargetCharacterActionsPanel from './targetCharacterActionsPanel';
 
 const textStyle = {
   fontSize: 12,
@@ -28,7 +30,7 @@ class CharacterTargetPanel extends Component {
         borderWidth: 2,
         borderRadius: 4,
         borderColor: '#fff',
-        backgroundColor: '#330'
+        backgroundColor: '#000'
       }}
     >
       <Text>{character.description.name}</Text>
@@ -36,11 +38,16 @@ class CharacterTargetPanel extends Component {
         character={character}
         textStyle={textStyle}
       />
+      <TargetCharacterActionsPanel
+        system={this.props.system}
+        targetCharacter={character}
+      />
     </Panel>;
   }
 }
 
 CharacterTargetPanel.propTypes = {
+  system: React.PropTypes.object.isRequired,
   character: React.PropTypes.object.isRequired
 };
 
@@ -49,7 +56,7 @@ export default withSystemState(
   (system, prevState, props) => {
     const character = system.world.characters.get(props.id);
 
-    return { character };
+    return { system, character };
   }
 );
 

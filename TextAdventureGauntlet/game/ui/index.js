@@ -4,11 +4,10 @@ import {
   Panel
 } from './basics';
 
-import TargetPanel from './targetPanel';
-import TargetView from './targetView';
+import ActiveCharacterPanel from './activeCharacterPanel';
 import MessageView from './messageView';
-import CharacterView from './characterView';
 import RoomPanel from './roomPanel';
+import TargetPanel from './targetPanel';
 
 const style = {
   position: 'relative',
@@ -22,18 +21,20 @@ const style = {
 
 export default class UI extends Component {
   render() {
+    const { system } = this.props;
+
     return <Panel style={style}>
       <Panel style={{ flex: 1 }}>
-        <CharacterView system={this.props.system} />
+        <ActiveCharacterPanel system={system} />
       </Panel>
-      <Panel style={{ flex: 2 }}>
-        <MessageView system={this.props.system} />
+      <Panel style={{ flex: 4 }}>
+        <MessageView system={system} />
       </Panel>
-      <Panel style={{ flex: 2 }}>
-        <RoomPanel system={this.props.system} />
+      <Panel style={{ flex: 4 }}>
+        <RoomPanel system={system} />
       </Panel>
-      <Panel style={{ flex: 1 }}>
-        <TargetPanel system={this.props.system} />
+      <Panel style={{ flex: 3 }}>
+        <TargetPanel system={system} />
       </Panel>
     </Panel>
   }

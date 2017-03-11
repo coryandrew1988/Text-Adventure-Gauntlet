@@ -40,11 +40,11 @@ export const createSystem = () => {
   };
 
   const action = {
-    useAbility: (abilityId) => {
+    useAbility: (ability, actor, target) => {
       transaction(() => {
-        world.abilities.execute(abilityId, {
-          actorId: ui.state.get().playerCharacterId,
-          targetId: ui.state.get().targetId
+        world.abilities.execute(ability.id, { // TODO stop using id to pass these around
+          actorId: actor.id,
+          targetId: target.id
         });
       });
     },
