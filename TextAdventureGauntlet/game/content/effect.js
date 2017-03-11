@@ -22,9 +22,9 @@ export const defineEffects = (system) => {
 
   defineEffect('setActorActivity', (params, context) => {
     const startTime = clock.getTime();
-    const character = getCharacter(context.actorId);
+    const { actor } = context;
 
-    character.activity = {
+    actor.activity = {
       id: Date.now() + '' + Math.random(), // TODO get actual ids
       startTime: new Date(startTime),
       endTime: new Date(startTime + params.delay),
@@ -32,8 +32,7 @@ export const defineEffects = (system) => {
     };
   });
 
-  const requireCharacter = (id, status, callback) => {
-    const character = getCharacter(id);
+  const requireCharacter = (character, status, callback) => {
     if (!character) { return; }
 
     if (status) {
@@ -58,20 +57,19 @@ export const defineEffects = (system) => {
   };
 
   defineEffect('requireActor', (params, context) => {
-    requireCharacter(context.actorId, params.status, () => {
+    requireCharacter(context.actor, params.status, () => {
       executeEffect(params.effect, context);
     });
   });
 
   defineEffect('requireTarget', (params, context) => {
-    requireCharacter(context.targetId, params.status, () => {
+    requireCharacter(context.target, params.status, () => {
       executeEffect(params.effect, context);
     });
   });
 
   defineEffect('damageTarget', (params, context) => {
-    const actor = getCharacter(context.actorId);
-    const target = getCharacter(context.targetId);
+    const { actor, target } = context;
 
     const power = params.power + actor.stats.power;
     const resistance = params.ignoresResistance ? 0 : target.stats.resistance;
@@ -88,7 +86,7 @@ export const defineEffects = (system) => {
   });
 
   defineEffect('tiltTarget', (params, context) => {
-    const target = getCharacter(context.targetId);
+    const { target } = context;
     if (target.stats.bp <= 0) { return; }
 
     target.stats.bp -= params.tilt;
@@ -96,13 +94,12 @@ export const defineEffects = (system) => {
     if (target.stats.bp <= 0) {
       target.stats.bp = 0;
 
-      applyStatusEffect('prone', context.targetId, {});
+      applyStatusEffect('prone', target, {});
     }
   });
 
   defineEffect('attackTarget', (params, context) => {
-    const actor = getCharacter(context.actorId);
-    const target = getCharacter(context.targetId);
+    const { actor, target } = context;
 
     const accuracy = params.accuracy + actor.stats.accuracy;
     const evasion = target.stats.evasion;

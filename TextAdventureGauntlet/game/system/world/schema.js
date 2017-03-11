@@ -77,7 +77,7 @@ export const worldSchema = [{
   properties: {
     id: 'string',
     key: 'string',
-    characterId: 'string',
+    character: 'Character',
     paramsJSON: 'string',
     startTime: { type: 'date', optional: true },
     endTime: { type: 'date', optional: true }

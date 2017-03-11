@@ -7,25 +7,25 @@ export const createStatusEffectSystem = (realm) => {
     define: (key, { isAllowed, onAdded, onRemoved }) => {
       map.set(key, { isAllowed, onAdded, onRemoved });
     },
-    apply: (key, characterId, params) => {
+    apply: (key, character, params) => {
       const config = map.get(key);
       if (!config) {
         throw new Error(`No status effect has the key "${key}".`);
       }
 
-      if (config.isAllowed && !config.isAllowed(characterId, params)) {
+      if (config.isAllowed && !config.isAllowed(character, params)) {
         return null;
       }
 
       const statusEffect = realm.create('CharacterStatusEffect', {
         id: createGuid(),
         key,
-        characterId,
+        character,
         paramsJSON: JSON.stringify(params)
         // TODO startTime and/or duration?
       });
 
-      config.onAdded(characterId, params, statusEffect);
+      config.onAdded(character, params, statusEffect);
 
       return statusEffect;
     }

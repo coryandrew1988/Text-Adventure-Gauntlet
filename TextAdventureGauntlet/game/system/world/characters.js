@@ -20,8 +20,8 @@ export const createCharacterSystem = (realm, statusEffects) => {
       .filtered('id != $0', character.id)
       .sorted('priority');
     },
-    hasAnyStatusEffectWithKey: (id, key) => {
-      return realm.objects('CharacterStatusEffect').filtered('characterId == $0 && key == $1', id, key).length > 0;
+    hasAnyStatusEffectWithKey: (character, key) => {
+      return realm.objects('CharacterStatusEffect').filtered('character == $0 && key == $1', character, key).length > 0;
     }
   };
 };

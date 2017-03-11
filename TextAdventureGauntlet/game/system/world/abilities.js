@@ -24,9 +24,7 @@ export const createAbilitySystem = (realm, effectSystem) => {
 
     get,
 
-    execute: (id, context) => {
-      const ability = get(id);
-      // TODO determine the optimal places for transactions
+    execute: (ability, context) => {
       effectSystem.execute(getEffect(ability), context);
     }
   };

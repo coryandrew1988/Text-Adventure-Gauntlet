@@ -42,10 +42,7 @@ export const createSystem = () => {
   const action = {
     useAbility: (ability, actor, target) => {
       transaction(() => {
-        world.abilities.execute(ability.id, { // TODO stop using id to pass these around
-          actorId: actor.id,
-          targetId: target.id
-        });
+        world.abilities.execute(ability, { actor, target });
       });
     },
     travel: (room) => {

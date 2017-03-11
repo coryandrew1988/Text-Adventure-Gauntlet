@@ -1,12 +1,9 @@
 import {
   React,
   Component,
-  Text,
   Panel,
   TextButton
 } from '../../basics';
-
-import { StatusMeterBarPanel } from '../../special';
 
 import { withSystemState } from '../../hoc';
 

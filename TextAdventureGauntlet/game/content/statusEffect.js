@@ -6,29 +6,24 @@ export const defineStatusEffects = (system) => {
   const defineStatusEffect = system.world.statusEffects.define;
 
   defineStatusEffect('prone', {
-    isAllowed: (characterId, params) => {
-      return !hasStatus(characterId, 'prone');
+    isAllowed: (character, params) => {
+      return !hasStatus(character, 'prone');
     },
-    onAdded: (characterId, params) => {
-      const character = getCharacter(characterId);
-
+    onAdded: (character, params) => {
       character.stats.resistance -= 2;
     },
-    onRemoved: (characterId, params) => {
-      const character = getCharacter(characterId);
-
+    onRemoved: (character, params) => {
       character.stats.resistance += 2;
     }
   });
 
   defineStatusEffect('poisoned', {
-    onAdded: (characterId, params) => {
+    onAdded: (character, params) => {
       system.scheduleTransaction(6000, () => {
-        const character = getCharacter(characterId);
         character.stats.hp -= params.value;
       });
     },
-    onRemoved: (characterId, params) => {
+    onRemoved: (character, params) => {
     }
   });
 };
