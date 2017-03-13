@@ -1,6 +1,4 @@
 export const defineStatusEffects = (system) => {
-  const getCharacter = system.world.characters.get;
-
   const hasStatus = system.world.characters.hasAnyStatusEffectWithKey;
 
   const defineStatusEffect = system.world.statusEffects.define;

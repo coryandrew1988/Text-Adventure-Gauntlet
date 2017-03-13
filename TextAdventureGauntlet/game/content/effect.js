@@ -1,6 +1,4 @@
 export const defineEffects = (system) => {
-  const getCharacter = system.world.characters.get;
-
   const clock = system.clock;
 
   const executeEffect = system.world.effects.execute;
