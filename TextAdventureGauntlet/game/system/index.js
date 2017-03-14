@@ -40,16 +40,19 @@ export const createSystem = () => {
   };
 
   const action = {
+    setTarget: (target) => {
+      transaction(() => {
+        ui.setTarget(target);
+      });
+    },
     useAbility: (ability, actor, target) => {
       transaction(() => {
         world.abilities.execute(ability, { actor, target });
       });
     },
-    travel: (room) => {
+    useFixtureAction: (action, actor, fixture) => {
       transaction(() => {
-        const activeCharacter = getActiveCharacter();
-
-        activeCharacter.room = room;
+        world.effects.execute(JSON.parse(action.effectJSON), { actor, fixture });
       });
     }
   };

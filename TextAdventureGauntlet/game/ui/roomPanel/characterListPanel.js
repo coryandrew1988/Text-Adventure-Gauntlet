@@ -1,7 +1,6 @@
 import {
   React,
   Component,
-  Text,
   MainPanel,
   TextButton
 } from '../basics';
@@ -10,10 +9,10 @@ import { withSystemState } from '../hoc';
 
 class CharacterPanel extends Component {
   render() {
-    const character = this.props.character;
+    const { system, character } = this.props;
 
     return <TextButton onPress={() => {
-      this.props.system.ui.setTarget({
+      system.action.setTarget({
         type: 'character',
         id: character.id
       });
@@ -28,10 +27,14 @@ CharacterPanel.propTypes = {
 
 class CharacterListPanel extends Component {
   render() {
+    const { system, characters } = this.props;
+
     return <MainPanel>
-      {this.props.characters.map(character => {
-        return <CharacterPanel key={character.id} system={this.props.system} character={character} />
-      })}
+      {characters.map(character => <CharacterPanel
+        key={character.id}
+        system={system}
+        character={character}
+      />)}
     </MainPanel>;
   }
 }

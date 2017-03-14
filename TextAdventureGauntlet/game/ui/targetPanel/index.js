@@ -7,22 +7,26 @@ import {
 import { withSystemState } from '../hoc';
 
 import CharacterTargetPanel from './characterTargetPanel';
+import FixtureTargetPanel from './fixtureTargetPanel';
 
 const targetRendererMap = new Map();
 
 targetRendererMap.set('character', (system, target) => {
   return <CharacterTargetPanel system={system} id={target.id} />
 });
+targetRendererMap.set('fixture', (system, target) => {
+  return <FixtureTargetPanel system={system} id={target.id} />
+});
 
 class TargetPanel extends Component {
   renderTarget() {
-    const target = this.props.target;
+    const { system, target } = this.props;
     if (target == null) { return null; }
 
     const targetRenderer = targetRendererMap.get(target.type);
     if (targetRenderer == null) { return null; }
 
-    return targetRenderer(this.props.system, target);
+    return targetRenderer(system, target);
   }
 
   render() {

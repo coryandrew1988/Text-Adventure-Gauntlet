@@ -31,10 +31,8 @@ export const createUI = (realm) => {
     state,
     getTarget: () => target,
     setTarget: (value) => {
-      realm.write(() => {
-        target = value;
-        getState().targetJSON = JSON.stringify(target);
-      });
+      target = value;
+      getState().targetJSON = JSON.stringify(target);
     }
   };
 };

@@ -20,14 +20,32 @@ export const worldSchema = [{
     id: 'string',
     description: 'RoomDescription'
   }
-  // TODO paths, items, recurring effects, status effects
+  // TODO items, recurring effects, status effects
 }, {
-  name: 'Path',
+  name: 'FixtureDescription',
+  primaryKey: 'id',
+  properties: {
+    id: 'string',
+    name: 'string'
+  }
+}, {
+  name: 'FixtureAction',
+  primaryKey: 'id',
+  properties: {
+    id: 'string',
+    name: 'string',
+    effectJSON: 'string'
+    // TODO add visibility constraints (ie, fixture state)
+  }
+}, {
+  name: 'Fixture',
   primaryKey: 'id',
   properties: {
     id: 'string',
     room: 'Room',
-    targetRoom: 'Room'
+    description: 'FixtureDescription',
+    state: { type: 'string', optional: true },
+    actions: { type: 'list', objectType: 'FixtureAction' }
   }
 }, {
   name: 'CharacterDescription',

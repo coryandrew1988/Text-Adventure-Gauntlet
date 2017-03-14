@@ -114,4 +114,11 @@ export const defineEffects = (system) => {
       }
     }
   });
+
+  defineEffect('moveActor', (params, context) => {
+    const { actor } = context;
+
+    actor.room = system.world.rooms.get(params.roomId);
+    system.ui.setTarget(null);
+  });
 };
