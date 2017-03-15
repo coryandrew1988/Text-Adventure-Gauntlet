@@ -112,4 +112,13 @@ export const worldSchema = [{
     activity: 'CharacterActivity',
     abilities: { type: 'list', objectType: 'Ability' }
   }
+}, {
+  name: 'CharacterController',
+  primaryKey: 'id',
+  properties: {
+    id: 'string',
+    character: 'Character',
+    aggression: 'int',
+    intelligence: 'int'
+  }
 }];

@@ -20,14 +20,6 @@ export const createSystem = () => {
   // TODO move all scheduling into the realm as well
   const scheduler = createScheduler();
 
-  const update = () => {
-    scheduler.update(clock.getTime());
-
-    global.setTimeout(update, 50);
-  };
-
-  update();
-
   const world = createWorld(realm);
   const ui = createUI(realm);
 
@@ -38,6 +30,35 @@ export const createSystem = () => {
   const getActiveCharacter = () => {
     return world.characters.get(ui.state.get().playerCharacterId);
   };
+
+  const update = () => {
+    scheduler.update(clock.getTime());
+
+    transaction(() => {
+      const activeCharacter = getActiveCharacter();
+      if (!activeCharacter) { return; }
+
+      const visibleCharacters = world.characters.getVisible(activeCharacter);
+      // TODO use getActiveRoom and getCharacters(room) instead of getVisible
+      visibleCharacters.forEach((visibleCharacter) => {
+        // TODO first test if character is already active
+        const abilities = visibleCharacter.abilities;
+        if (abilities.length <= 0) { return; }
+
+        const ability = abilities[Math.random() * abilities.length];
+        // TODO use CharacterController to select ability or to wait
+        // TODO check factions to get target
+        world.abilities.execute(ability, {
+          actor: visibleCharacter,
+          target: activeCharacter
+        });
+      });
+    })
+
+    global.setTimeout(update, 50);
+  };
+
+  update();
 
   const action = {
     setTarget: (target) => {

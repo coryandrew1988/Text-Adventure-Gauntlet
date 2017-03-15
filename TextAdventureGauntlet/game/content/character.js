@@ -3,6 +3,7 @@
 const createPlayer = (system) => {
   const getAbility = system.world.abilities.get;
   const getRoom = system.world.rooms.get;
+
   return {
     id: 'player',
     room: getRoom('only'),
@@ -29,7 +30,9 @@ const createPlayer = (system) => {
 };
 
 const createEnemy = (system, id, name) => {
+  const getAbility = system.world.abilities.get;
   const getRoom = system.world.rooms.get;
+
   return {
     id,
     priority: 0,
@@ -50,12 +53,15 @@ const createEnemy = (system, id, name) => {
       resistance: -2,
       accuracy: 0,
       evasion: 0
-    }
+    },
+    abilities: [getAbility('comboPunch'), getAbility('heavyPunch')]
   };
 };
 
 const createTemp = (system) => {
   const getRoom = system.world.rooms.get;
+  const getAbility = system.world.abilities.get;
+
 
   return {
     id: 'temp',
@@ -77,7 +83,8 @@ const createTemp = (system) => {
       resistance: 0,
       accuracy: 0,
       evasion: 0
-    }
+    },
+    abilities: [getAbility('comboPunch'), getAbility('heavyPunch')]
   };
 };
 
