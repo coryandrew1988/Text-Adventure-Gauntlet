@@ -1,7 +1,7 @@
 import {
   React,
   Component,
-  MainPanel
+  Panel
 } from '../basics';
 
 import { withSystemState } from '../hoc';
@@ -30,9 +30,7 @@ class TargetPanel extends Component {
   }
 
   render() {
-    return <MainPanel>
-      {this.renderTarget()}
-    </MainPanel>;
+    return <Panel>{this.renderTarget()}</Panel>;
   }
 }
 

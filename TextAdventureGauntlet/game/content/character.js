@@ -88,7 +88,9 @@ export const registerCharacters = (system) => {
     createEnemy(system, 'enemyA', 'Enemy A'),
     createEnemy(system, 'enemyB', 'Enemy B'),
     createEnemy(system, 'enemyC', 'Enemy C'),
-    createEnemy(system, 'enemyD', 'Enemy D')
+    createEnemy(system, 'enemyD', 'Enemy D'),
+    createEnemy(system, 'enemyE', 'Enemy E'),
+    createEnemy(system, 'enemyF', 'Enemy F')
   ];
 
   characters.forEach(c => {

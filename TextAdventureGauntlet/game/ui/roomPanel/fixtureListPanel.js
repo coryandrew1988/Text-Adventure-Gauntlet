@@ -2,7 +2,6 @@ import {
   React,
   Component,
   Panel,
-  Text,
   TextButton
 } from '../basics';
 
@@ -10,42 +9,59 @@ import { withSystemState } from '../hoc';
 
 class FixturePanel extends Component {
   render() {
-    const { system, fixture } = this.props;
+    const { system, fixture, isTarget } = this.props;
 
     return <TextButton
-        key={fixture.id}
-        style={{
-          margin: 1,
-          padding: 1,
-          //backgroundColor: '#dd0',
-          borderRadius: 2
-        }}
-        onPress={() => {
-          system.action.setTarget({
-            type: 'fixture',
-            id: fixture.id
-          });
-        }}
-      >
-        {fixture.description.name}
-      </TextButton>;
+      style={{
+        position: 'relative',
+        top: isTarget ? -2 : 0,
+        margin: 4,
+        padding: 4,
+        flex: 1,
+        aspectRatio: 1,
+        borderRadius: 4,
+        alignItems: 'center',
+        borderWidth: 2,
+        borderColor: isTarget ? '#fff' : '#666',
+        backgroundColor: '#444'
+      }}
+      onPress={() => {
+        system.action.setTarget({
+          type: 'fixture',
+          id: fixture.id
+        });
+      }}
+    >
+      {fixture.description.name}
+    </TextButton>;
   }
 }
 
 FixturePanel.propTypes = {
   system: React.PropTypes.object.isRequired,
-  fixture: React.PropTypes.object.isRequired
+  fixture: React.PropTypes.object.isRequired,
+  isTarget: React.PropTypes.bool.isRequired
+};
+
+const isTarget = (fixture, target) => {
+  return Boolean(target && target.type === 'fixture' && target.id == fixture.id);
 };
 
 class FixtureListPanel extends Component {
   render() {
-    const { system, fixtures } = this.props;
+    const { system, fixtures, target } = this.props;
 
-    return <Panel>
+    return <Panel style={{
+      flexDirection: 'row',
+      flex: 1,
+      justifyContent: 'center',
+      alignItems: 'center'
+    }}>
       {fixtures.map(fixture => <FixturePanel
         key={fixture.id}
         system={system}
         fixture={fixture}
+        isTarget={isTarget(fixture, target)}
       />)}
     </Panel>;
   }
@@ -53,12 +69,14 @@ class FixtureListPanel extends Component {
 
 FixtureListPanel.propTypes = {
   system: React.PropTypes.object.isRequired,
-  fixtures: React.PropTypes.arrayOf(React.PropTypes.object.isRequired).isRequired
+  fixtures: React.PropTypes.arrayOf(React.PropTypes.object.isRequired).isRequired,
+  target: React.PropTypes.object
 };
 
 export default withSystemState(FixtureListPanel, (system, prevState, props) => {
   return {
     system,
-    fixtures: props.fixtures
+    fixtures: props.fixtures,
+    target: system.ui.getTarget()
   };
 });

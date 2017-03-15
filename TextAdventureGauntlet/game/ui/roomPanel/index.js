@@ -2,8 +2,7 @@ import {
   React,
   Component,
   Text,
-  MainPanel,
-  TextButton
+  Panel
 } from '../basics';
 
 import { withSystemState } from '../hoc';
@@ -15,15 +14,14 @@ class RoomPanel extends Component {
   render() {
     const { system, fixtures } = this.props;
 
-    return <MainPanel style={{
-      margin: 1,
-      borderWidth: 2,
-      borderColor: '#bbb'
+    return <Panel style={{
+      margin: 0,
+      padding: 2
     }}>
       <Text>{this.props.room.description.name}</Text>
       <CharacterListPanel system={system} />
       <FixtureListPanel system={system} fixtures={fixtures} />
-    </MainPanel>;
+    </Panel>;
   }
 }
 

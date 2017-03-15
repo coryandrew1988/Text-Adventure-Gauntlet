@@ -3,7 +3,7 @@ import {
   Component,
   Text,
   ListView,
-  MainPanel
+  Panel
 } from './basics';
 
 import { withSystemState } from './hoc';
@@ -12,14 +12,14 @@ const renderMessage = (message) => <Text>{message.text}</Text>;
 
 class MessageView extends Component {
   render() {
-    return <MainPanel>
+    return <Panel>
       <ListView
         shouldLockToBottom={this.props.shouldLockToBottom}
         dataSource={this.props.messageSource}
         renderRow={renderMessage}
         enableEmptySections={true} // TODO stop needing this; will a React update help?
       />
-    </MainPanel>;
+    </Panel>;
   }
 }
 

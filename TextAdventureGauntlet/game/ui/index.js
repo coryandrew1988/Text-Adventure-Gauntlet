@@ -24,17 +24,17 @@ export default class UI extends Component {
     const { system } = this.props;
 
     return <Panel style={style}>
-      <Panel style={{ flex: 1 }}>
-        <ActiveCharacterPanel system={system} />
-      </Panel>
-      <Panel style={{ flex: 4 }}>
-        <MessageView system={system} />
-      </Panel>
       <Panel style={{ flex: 4 }}>
         <RoomPanel system={system} />
       </Panel>
       <Panel style={{ flex: 3 }}>
         <TargetPanel system={system} />
+      </Panel>
+      <Panel style={{ flex: 1 }}>
+        <ActiveCharacterPanel system={system} />
+      </Panel>
+      <Panel style={{ flex: 4 }}>
+        <MessageView system={system} />
       </Panel>
     </Panel>
   }

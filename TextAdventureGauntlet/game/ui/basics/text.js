@@ -2,7 +2,8 @@ import React, { Component } from 'react';
 import { Text as ReactText } from 'react-native';
 
 const style = {
-  fontFamily: 'times',
+  fontFamily: 'serif',
+  fontSize: 11,
   color: '#fff'
 };
 

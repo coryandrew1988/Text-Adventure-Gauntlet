@@ -1,7 +1,7 @@
 import {
   React,
   Component,
-  MainPanel
+  Panel
 } from './basics';
 
 import { StatusMeterBarPanel } from './special';
@@ -15,13 +15,17 @@ const textStyle = {
 
 class ActiveCharacterPanel extends Component {
   render() {
-    return <MainPanel style={{ flex: 1 }}>
+    return <Panel style={{
+      padding: 2,
+      borderWidth: 2,
+      borderColor: '#ccc'
+    }}>
       <StatusMeterBarPanel
         character={this.props.character}
         textStyle={textStyle}
         useLabels={true}
       />
-    </MainPanel>
+    </Panel>
   }
 }
 

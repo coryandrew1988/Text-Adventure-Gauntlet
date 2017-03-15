@@ -14,7 +14,6 @@ import PanelButton from './panelButton';
 
 import ListView from './listView';
 
-import MainPanel from './mainPanel';
 import MeterBar from './meterBar';
 
 export {
@@ -34,8 +33,6 @@ export {
   TextButton,
 
   ListView,
-
-  MainPanel,
 
   MeterBar
 };

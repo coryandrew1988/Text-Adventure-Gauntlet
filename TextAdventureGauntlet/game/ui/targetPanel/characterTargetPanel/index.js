@@ -18,7 +18,7 @@ const textStyle = {
 
 class CharacterTargetPanel extends Component {
   render() {
-    const character = this.props.character;
+    const { system, character } = this.props;
 
     return <Panel
       style={{
@@ -37,9 +37,10 @@ class CharacterTargetPanel extends Component {
       <StatusMeterBarPanel
         character={character}
         textStyle={textStyle}
+        useLabels={true}
       />
       <TargetCharacterActionsPanel
-        system={this.props.system}
+        system={system}
         targetCharacter={character}
       />
     </Panel>;
