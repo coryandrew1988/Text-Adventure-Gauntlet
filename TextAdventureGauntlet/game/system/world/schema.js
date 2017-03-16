@@ -85,8 +85,8 @@ export const worldSchema = [{
   properties: {
     id: 'string',
     character: 'Character',
-    startTime: 'date',
-    endTime: 'date',
+    startTime: 'int',
+    endTime: 'int',
     ability: 'Ability'
   }
 }, {
@@ -97,8 +97,8 @@ export const worldSchema = [{
     key: 'string',
     character: 'Character',
     paramsJSON: 'string',
-    startTime: { type: 'date', optional: true },
-    endTime: { type: 'date', optional: true }
+    startTime: { type: 'int', optional: true },
+    endTime: { type: 'int', optional: true }
   }
 }, {
   name: 'Character',
@@ -110,6 +110,7 @@ export const worldSchema = [{
     description: 'CharacterDescription',
     stats: 'CharacterStats',
     activity: 'CharacterActivity',
+    nextAvailableTime: { type: 'int', optional: true }, // TODO keep this inside activity once realm allows deep filters
     abilities: { type: 'list', objectType: 'Ability' }
   }
 }, {

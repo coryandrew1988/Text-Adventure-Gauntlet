@@ -38,22 +38,22 @@ export const createSystem = () => {
       const activeCharacter = getActiveCharacter();
       if (!activeCharacter) { return; }
 
-      const visibleCharacters = world.characters.getVisible(activeCharacter);
-      // TODO use getActiveRoom and getCharacters(room) instead of getVisible
-      visibleCharacters.forEach((visibleCharacter) => {
-        // TODO first test if character is already active
-        const abilities = visibleCharacter.abilities;
+      world.characters.getAvailable(clock.getTime()).forEach((character) => {
+        if (!character || character === activeCharacter) { return; }
+
+        log(['character is ', character]);
+        const abilities = character.abilities;
         if (abilities.length <= 0) { return; }
 
-        const ability = abilities[Math.random() * abilities.length];
+        const ability = abilities[Math.floor(Math.random() * abilities.length)];
         // TODO use CharacterController to select ability or to wait
         // TODO check factions to get target
         world.abilities.execute(ability, {
-          actor: visibleCharacter,
+          actor: character,
           target: activeCharacter
         });
       });
-    })
+    });
 
     global.setTimeout(update, 50);
   };

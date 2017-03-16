@@ -24,10 +24,11 @@ export const defineEffects = (system) => {
     const startTime = clock.getTime();
     const character = context[prop];
 
+    character.nextAvailableTime = startTime + delay;
     character.activity = {
       id: createGuid(),
-      startTime: new Date(startTime),
-      endTime: new Date(startTime + delay),
+      startTime: startTime,
+      endTime: startTime + delay,
       ability: system.world.abilities.get(abilityId)
     };
   });

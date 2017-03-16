@@ -3,7 +3,7 @@ export const uiSchema = [{
   primaryKey: 'id',
   properties: {
     id: 'string',
-    time: 'date',
+    time: 'int',
     text: 'string'
   }
 }, {

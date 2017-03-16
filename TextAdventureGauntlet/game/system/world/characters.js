@@ -1,3 +1,5 @@
+import { createGuid } from '../../utils';
+
 export const createCharacterSystem = (realm, statusEffects) => {
   const get = (id) => {
     if (!id) { return null; }
@@ -8,7 +10,7 @@ export const createCharacterSystem = (realm, statusEffects) => {
   return {
     create: (character) => {
       if (!character.id) {
-        character.id = new Date() + '' + Math.random(); // TODO
+        character.id = createGuid();
       }
 
       return realm.create('Character', character);
@@ -19,6 +21,10 @@ export const createCharacterSystem = (realm, statusEffects) => {
       .filtered('room == $0', character.room)
       .filtered('id != $0', character.id)
       .sorted('priority');
+    },
+    getAvailable: (now) => {
+      // TODO sure would be great if realm could deep filter
+      return realm.objects('Character').filtered('nextAvailableTime == null || nextAvailableTime <= $0', now);
     },
     hasAnyStatusEffectWithKey: (character, key) => {
       return realm.objects('CharacterStatusEffect').filtered('character == $0 && key == $1', character, key).length > 0;
