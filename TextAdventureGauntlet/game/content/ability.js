@@ -5,22 +5,19 @@ const delayEffect = (delay, effect) => {
   };
 };
 
-const requireActor = (status, effect) => {
+const requireCharacter = (prop, status, effect) => {
   return {
-    key: 'requireActor',
-    params: { status, effect }
-  };
-};
-
-const requireTarget = (status, effect) => {
-  return {
-    key: 'requireTarget',
-    params: { status, effect }
+    key: 'require',
+    params: { status, effect, prop }
   };
 };
 
 const requireActorAndTarget = (statuses, effect) => {
-  return requireActor(statuses.actor, requireTarget(statuses.target, effect));
+  return requireCharacter(
+    'actor',
+    statuses.actor,
+    requireCharacter('target', statuses.target, effect)
+  );
 };
 
 const delayAndRequire = (delay, statuses, effect) => {
@@ -39,17 +36,26 @@ const createHit = (delay, accuracy, power, hitText, missText) => {
     actor: { isAlive: true },
     target: { isAlive: true }
   }, {
-    key: 'attackTarget',
+    key: 'attack',
     params: {
+      prop: 'actor',
+      targetProp: 'target',
       accuracy,
       hitEffect: [
         {
-          key: 'damageTarget',
-          params: { power }
+          key: 'damage',
+          params: {
+            prop: 'actor',
+            targetProp: 'target',
+            power
+          }
         },
         {
-          key: 'tiltTarget',
-          params: { tilt: 1 }
+          key: 'tilt',
+          params: {
+            targetProp: 'target',
+            tilt: 1
+          }
         },
         publishMessage(hitText)
       ],
@@ -69,8 +75,9 @@ const createAttack = (abilityId, actorDelay, startText, effect) => {
     },
     [
       {
-        key: 'setActorActivity',
+        key: 'setActivity',
         params: {
+          prop: 'actor',
           delay: actorDelay,
           abilityId
         }

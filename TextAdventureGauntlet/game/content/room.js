@@ -18,8 +18,9 @@ export const createRooms = (system) => {
         id: createGuid(),
         name: 'Travel',
         effectJSON: JSON.stringify({
-          key: 'moveActor',
+          key: 'move',
           params: {
+            prop: 'actor',
             roomId: targetRoom.id
           }
         })

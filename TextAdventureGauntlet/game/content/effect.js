@@ -1,3 +1,5 @@
+import { createGuid } from '../utils';
+
 export const defineEffects = (system) => {
   const clock = system.clock;
 
@@ -5,32 +7,33 @@ export const defineEffects = (system) => {
   const defineEffect = system.world.effects.define;
   const applyStatusEffect = system.world.statusEffects.apply;
 
-  defineEffect('delayEffect', (params, context) => {
-    system.scheduleTransaction(params.delay, () => {
-      executeEffect(params.effect, context);
+  defineEffect('delayEffect', ({ delay, effect }, context) => {
+    system.scheduleTransaction(delay, () => {
+      executeEffect(effect, context);
     });
   });
 
-  defineEffect('publishMessage', (params, context) => {
-    system.ui.messages.create(params.text);
+  defineEffect('publishMessage', ({ text }, context) => {
+    system.ui.messages.create(text);
     // TODO determine the best way to publish a message
     // TODO actually render some templates here
     // TODO use context to communicate about the results of other effects
   });
 
-  defineEffect('setActorActivity', (params, context) => {
+  defineEffect('setActivity', ({ prop, delay, abilityId }, context) => {
     const startTime = clock.getTime();
-    const { actor } = context;
+    const character = context[prop];
 
-    actor.activity = {
-      id: Date.now() + '' + Math.random(), // TODO get actual ids
+    character.activity = {
+      id: createGuid(),
       startTime: new Date(startTime),
-      endTime: new Date(startTime + params.delay),
-      ability: null // params.abilityId // TODO
+      endTime: new Date(startTime + delay),
+      ability: system.world.abilities.get(abilityId)
     };
   });
 
-  const requireCharacter = (character, status, callback) => {
+  defineEffect('require', ({ prop, status, effect }, context) => {
+    const character = context[prop];
     if (!character) { return; }
 
     if (status) {
@@ -51,28 +54,19 @@ export const defineEffects = (system) => {
       // TODO also do optional checks for other statuses
     }
 
-    callback();
-  };
-
-  defineEffect('requireActor', (params, context) => {
-    requireCharacter(context.actor, params.status, () => {
-      executeEffect(params.effect, context);
-    });
+    executeEffect(effect, context);
   });
 
-  defineEffect('requireTarget', (params, context) => {
-    requireCharacter(context.target, params.status, () => {
-      executeEffect(params.effect, context);
-    });
-  });
+  defineEffect('damage', ({
+    prop, targetProp, power, ignoresResistance
+  }, context) => {
+    const actor = context[prop];
+    const target = context[targetProp];
 
-  defineEffect('damageTarget', (params, context) => {
-    const { actor, target } = context;
+    const totalPower = power + actor.stats.power;
+    const totalResistance = ignoresResistance ? 0 : target.stats.resistance;
 
-    const power = params.power + actor.stats.power;
-    const resistance = params.ignoresResistance ? 0 : target.stats.resistance;
-
-    const damage = Math.max(0, power - resistance);
+    const damage = Math.max(0, totalPower - totalResistance);
 
     target.stats.hp -= damage;
 
@@ -83,11 +77,11 @@ export const defineEffects = (system) => {
     }
   });
 
-  defineEffect('tiltTarget', (params, context) => {
-    const { target } = context;
+  defineEffect('tilt', ({ targetProp, tilt }, context) => {
+    const target = context[targetProp];
     if (target.stats.bp <= 0) { return; }
 
-    target.stats.bp -= params.tilt;
+    target.stats.bp -= tilt;
 
     if (target.stats.bp <= 0) {
       target.stats.bp = 0;
@@ -96,29 +90,35 @@ export const defineEffects = (system) => {
     }
   });
 
-  defineEffect('attackTarget', (params, context) => {
-    const { actor, target } = context;
+  defineEffect('attack', ({
+    prop, targetProp, accuracy, hitEffect, missEffect
+  }, context) => {
+    const actor = context[prop];
+    const target = context[targetProp];
 
-    const accuracy = params.accuracy + actor.stats.accuracy;
-    const evasion = target.stats.evasion;
+    const totalAccuracy = accuracy + actor.stats.accuracy;
+    const totalEvasion = target.stats.evasion;
 
-    const isHit = Math.random() * 100 < accuracy - evasion;
+    const isHit = Math.random() * 100 < totalAccuracy - totalEvasion;
 
     if (isHit) {
-      if (params.hitEffect) {
-        executeEffect(params.hitEffect, context);
+      if (hitEffect) {
+        executeEffect(hitEffect, context);
       }
     } else {
-      if (params.missEffect) {
-        executeEffect(params.missEffect, context);
+      if (missEffect) {
+        executeEffect(missEffect, context);
       }
     }
   });
 
-  defineEffect('moveActor', (params, context) => {
-    const { actor } = context;
+  defineEffect('move', ({ prop, roomId }, context) => {
+    const character = context[prop];
 
-    actor.room = system.world.rooms.get(params.roomId);
-    system.ui.setTarget(null);
+    character.room = system.world.rooms.get(roomId);
+
+    if (character === system.getActiveCharacter()) {
+      system.ui.setTarget(null);
+    }
   });
 };
