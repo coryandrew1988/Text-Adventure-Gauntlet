@@ -1,4 +1,6 @@
-// TODO later, we'll instead load characters dyanamically
+import { createGuid } from '../utils';
+
+// TODO load/generate characters dyanamically
 
 const createPlayer = (system) => {
   const getAbility = system.world.abilities.get;
@@ -29,20 +31,20 @@ const createPlayer = (system) => {
   };
 };
 
-const createEnemy = (system, id, name) => {
+const createEnemy = (system, name) => {
   const getAbility = system.world.abilities.get;
   const getRoom = system.world.rooms.get;
 
   return {
-    id,
+    id: createGuid(),
     priority: 0,
     room: getRoom('only'),
     description: {
-      id: id + 'Description',
+      id: createGuid(),
       name
     },
     stats: {
-      id: id + 'Stats',
+      id: createGuid(),
       hp: 2,
       mp: 1,
       bp: 2,
@@ -54,7 +56,12 @@ const createEnemy = (system, id, name) => {
       accuracy: 0,
       evasion: 0
     },
-    abilities: [getAbility('comboPunch'), getAbility('heavyPunch')]
+    abilities: [getAbility('comboPunch'), getAbility('heavyPunch')],
+    controller: {
+      id: createGuid(),
+      aggression: 10,
+      intelligence: 0
+    }
   };
 };
 
@@ -62,17 +69,16 @@ const createTemp = (system) => {
   const getRoom = system.world.rooms.get;
   const getAbility = system.world.abilities.get;
 
-
   return {
-    id: 'temp',
+    id: createGuid(),
     priority: 1,
     room: getRoom('second'),
     description: {
-      id: 'tempDescription',
+      id: createGuid(),
       name: 'The Temporary One'
     },
     stats: {
-      id: 'tempStats',
+      id: createGuid(),
       maxHP: 10,
       hp: 10,
       maxMP: 3,
@@ -84,20 +90,26 @@ const createTemp = (system) => {
       accuracy: 0,
       evasion: 0
     },
-    abilities: [getAbility('comboPunch'), getAbility('heavyPunch')]
+    abilities: [getAbility('comboPunch'), getAbility('heavyPunch')],
+    controller: {
+      id: createGuid(),
+      aggression: 25,
+      intelligence: 0
+    }
   };
 };
 
 export const registerCharacters = (system) => {
+  const playerCharacter = createPlayer(system);
   const characters = [
+    playerCharacter,
     createTemp(system),
-    createPlayer(system),
-    createEnemy(system, 'enemyA', 'Enemy A'),
-    createEnemy(system, 'enemyB', 'Enemy B'),
-    createEnemy(system, 'enemyC', 'Enemy C'),
-    createEnemy(system, 'enemyD', 'Enemy D'),
-    createEnemy(system, 'enemyE', 'Enemy E'),
-    createEnemy(system, 'enemyF', 'Enemy F')
+    createEnemy(system, 'Enemy A'),
+    createEnemy(system, 'Enemy B'),
+    createEnemy(system, 'Enemy C'),
+    createEnemy(system, 'Enemy D'),
+    createEnemy(system, 'Enemy E'),
+    createEnemy(system, 'Enemy F')
   ];
 
   characters.forEach(c => {

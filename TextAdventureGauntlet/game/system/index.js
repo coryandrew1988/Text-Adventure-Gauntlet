@@ -32,30 +32,45 @@ export const createSystem = () => {
   };
 
   const update = () => {
-    scheduler.update(clock.getTime());
-
+    const now = clock.getTime();
+    scheduler.update(now);
+    // TODO move character control logic into world hierarchy
     transaction(() => {
       const activeCharacter = getActiveCharacter();
       if (!activeCharacter) { return; }
 
-      world.characters.getAvailable(clock.getTime()).forEach((character) => {
-        if (!character || character === activeCharacter) { return; }
+      const activeRoom = activeCharacter.room;
 
-        log(['character is ', character]);
-        const abilities = character.abilities;
-        if (abilities.length <= 0) { return; }
+      world.characters.getAvailable(now).snapshot().forEach(character => {
+        if (!character) { return; }
 
-        const ability = abilities[Math.floor(Math.random() * abilities.length)];
-        // TODO use CharacterController to select ability or to wait
-        // TODO check factions to get target
-        world.abilities.execute(ability, {
-          actor: character,
-          target: activeCharacter
-        });
+        const { controller } = character;
+        if (controller == null) { return; }
+
+        if (character.room.id !== activeRoom.id) {
+          character.nextAvailableTime = now + 3000;
+          return;
+        }
+
+        if (controller.aggression < 100 * Math.random()) {
+          character.nextAvailableTime = now + 3000;
+        } else {
+          const abilities = character.abilities;
+          if (abilities.length <= 0) { return; }
+
+          // TODO use controller to select ability
+
+          const ability = abilities[Math.floor(Math.random() * abilities.length)];
+          // TODO check factions to get target
+          world.abilities.execute(ability, {
+            actor: character,
+            target: activeCharacter
+          });
+        }
       });
     });
 
-    global.setTimeout(update, 50);
+    global.setTimeout(update, 200);
   };
 
   update();

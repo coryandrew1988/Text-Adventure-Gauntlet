@@ -1,3 +1,4 @@
+// TODO index on filter fields
 export const worldSchema = [{
   name: 'Ability',
   primaryKey: 'id',
@@ -101,6 +102,14 @@ export const worldSchema = [{
     endTime: { type: 'int', optional: true }
   }
 }, {
+  name: 'CharacterController',
+  primaryKey: 'id',
+  properties: {
+    id: 'string',
+    aggression: 'int',
+    intelligence: 'int'
+  }
+}, {
   name: 'Character',
   primaryKey: 'id',
   properties: {
@@ -111,15 +120,7 @@ export const worldSchema = [{
     stats: 'CharacterStats',
     activity: 'CharacterActivity',
     nextAvailableTime: { type: 'int', optional: true }, // TODO keep this inside activity once realm allows deep filters
-    abilities: { type: 'list', objectType: 'Ability' }
-  }
-}, {
-  name: 'CharacterController',
-  primaryKey: 'id',
-  properties: {
-    id: 'string',
-    character: 'Character',
-    aggression: 'int',
-    intelligence: 'int'
+    abilities: { type: 'list', objectType: 'Ability' },
+    controller: 'CharacterController'
   }
 }];
