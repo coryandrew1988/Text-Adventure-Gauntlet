@@ -15,8 +15,8 @@ class CharacterPanel extends Component {
       style={{
         position: 'relative',
         top: isTarget ? -2 : 0,
-        margin: 4,
-        padding: 4,
+        margin: 2,
+        padding: 2,
         flex: 1,
         aspectRatio: 1,
         borderRadius: 4,
@@ -52,6 +52,7 @@ class CharacterListPanel extends Component {
     return <Panel style={{
       flexDirection: 'row',
       flex: 1,
+      padding: 2,
       justifyContent: 'space-around',
       alignItems: 'center',
       overflow: 'scroll'

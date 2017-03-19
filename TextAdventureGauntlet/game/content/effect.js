@@ -118,7 +118,7 @@ export const defineEffects = (system) => {
 
     character.room = system.world.rooms.get(roomId);
 
-    if (character === system.getActiveCharacter()) {
+    if (character.id === system.getActiveCharacter().id) {
       system.ui.setTarget(null);
     }
   });

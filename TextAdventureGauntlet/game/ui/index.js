@@ -25,6 +25,9 @@ export default class UI extends Component {
 
     return <Panel style={style}>
       <Panel style={{ flex: 4 }}>
+        <MessageView system={system} />
+      </Panel>
+      <Panel style={{ flex: 4 }}>
         <RoomPanel system={system} />
       </Panel>
       <Panel style={{ flex: 3 }}>
@@ -32,9 +35,6 @@ export default class UI extends Component {
       </Panel>
       <Panel style={{ flex: 1 }}>
         <ActiveCharacterPanel system={system} />
-      </Panel>
-      <Panel style={{ flex: 4 }}>
-        <MessageView system={system} />
       </Panel>
     </Panel>
   }

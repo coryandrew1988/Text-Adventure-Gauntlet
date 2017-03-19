@@ -16,9 +16,7 @@ const textStyle = {
 class ActiveCharacterPanel extends Component {
   render() {
     return <Panel style={{
-      padding: 2,
-      borderWidth: 2,
-      borderColor: '#ccc'
+      padding: 2
     }}>
       <StatusMeterBarPanel
         character={this.props.character}

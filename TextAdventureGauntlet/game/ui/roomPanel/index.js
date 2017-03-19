@@ -16,7 +16,9 @@ class RoomPanel extends Component {
 
     return <Panel style={{
       margin: 0,
-      padding: 2
+      padding: 2,
+      borderWidth: 2,
+      borderColor: '#bbb'
     }}>
       <Text>{this.props.room.description.name}</Text>
       <CharacterListPanel system={system} />
