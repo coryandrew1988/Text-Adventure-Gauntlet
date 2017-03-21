@@ -24,10 +24,10 @@ const delayAndRequire = (delay, statuses, effect) => {
   return delayEffect(delay, requireActorAndTarget(statuses, effect));
 };
 
-const publishMessage = (text) => {
+const publishMessage = (template, effect) => {
   return {
     key: 'publishMessage',
-    params: { text }
+    params: { template, effect }
   };
 };
 
@@ -35,7 +35,7 @@ const createHit = (delay, accuracy, power, hitText, missText) => {
   return delayAndRequire(delay, {
     actor: { isAlive: true },
     target: { isAlive: true }
-  }, {
+  }, publishMessage('attack', {
     key: 'attack',
     params: {
       prop: 'actor',
@@ -56,12 +56,10 @@ const createHit = (delay, accuracy, power, hitText, missText) => {
             targetProp: 'target',
             tilt: 1
           }
-        },
-        publishMessage(hitText)
-      ],
-      missEffect: publishMessage(missText)
+        }
+      ]
     }
-  });
+  }));
 };
 
 const createAttack = (abilityId, actorDelay, startText, effect) => {
@@ -74,15 +72,14 @@ const createAttack = (abilityId, actorDelay, startText, effect) => {
       target: { isAlive: true }
     },
     [
-      {
+      publishMessage('setActivity', {
         key: 'setActivity',
         params: {
           prop: 'actor',
           delay: actorDelay,
           abilityId
         }
-      },
-      publishMessage(startText),
+      }),
       effect
     ]
   );
@@ -100,7 +97,7 @@ const createComboPunchAbility = () => {
   return {
     id: 'comboPunch',
     name: 'Combo Punch',
-    effect: createAttack('punch', 3000, 'Attacking with a punch combo!', [
+    effect: createAttack('comboPunch', 3000, 'Attacking with a punch combo!', [
       createHit(1000, 100, -2, 'hit!', 'miss!'),
       createHit(1500, 100, -2, 'hit!', 'miss!'),
       createHit(2000, 100, -2, 'hit!', 'miss!')

@@ -1,3 +1,5 @@
+import { createMessageSystem } from './messages';
+
 export const createUI = (realm) => {
   // TODO detemine best place to create initial UI state (maybe the content loader?)
   realm.write(() => {
@@ -7,16 +9,7 @@ export const createUI = (realm) => {
     });
   });
 
-  const messages = {
-    create: text => realm.create('Message', {
-      id: Date.now() + '' + Math.random(),
-      time: Date.now(), // TODO tie this to the game clock?
-      text
-    }),
-    getAll: () => {
-      return realm.objects('Message').sorted('time');
-    }
-  };
+  const messages = createMessageSystem(realm);
 
   const getState = () => realm.objectForPrimaryKey('State', 'only');
 

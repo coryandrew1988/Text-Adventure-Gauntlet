@@ -2,14 +2,12 @@ export const createEffectSystem = () => {
   const map = new Map();
 
   const execute = (effect, context) => {
-    if (!effect) { return; }
+    if (!effect) { return null; }
 
     if (Array.isArray(effect)) {
-      effect.forEach((e) => {
-        execute(e, context);
+      return effect.map((e) => {
+        return execute(e, context);
       });
-
-      return;
     }
 
     const effectCallback = map.get(effect.key);
@@ -17,7 +15,7 @@ export const createEffectSystem = () => {
       throw new Error(`There is no effect with key "${effect.key}".`);
     }
 
-    effectCallback(effect.params, context);
+    return effectCallback(effect.params, context);
   };
 
   return {
