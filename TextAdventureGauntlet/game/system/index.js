@@ -1,3 +1,5 @@
+import EventEmitter from 'EventEmitter';
+
 import {
   createClock,
   createScheduler
@@ -93,6 +95,18 @@ export const createSystem = () => {
     }
   };
 
+  let updateIsScheduled = false;
+  const stateEventEmitter = new EventEmitter();
+  realm.addListener('change', () => {
+    if (updateIsScheduled) { return; }
+    updateIsScheduled = true;
+
+    requestAnimationFrame(() => {
+      updateIsScheduled = false;
+      stateEventEmitter.emit('change');
+    });
+  });
+
   return {
     world,
     ui,
@@ -107,10 +121,10 @@ export const createSystem = () => {
     },
 
     addStateListener: (callback) => {
-      realm.addListener('change', callback);
+      stateEventEmitter.addListener('change', callback);
     },
     removeStateListener: (callback) => {
-      realm.removeListener('change', callback);
+      stateEventEmitter.removeListener('change', callback);
     },
 
     action,
