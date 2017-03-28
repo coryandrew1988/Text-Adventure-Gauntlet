@@ -1,6 +1,6 @@
 import { createMessageSystem } from './messages';
 
-export const createUI = (realm) => {
+export const createUI = (realm, stateEventEmitter) => {
   // TODO detemine best place to create initial UI state (maybe the content loader?)
   realm.write(() => {
     realm.create('State', {
@@ -9,7 +9,7 @@ export const createUI = (realm) => {
     });
   });
 
-  const messages = createMessageSystem(realm);
+  const messages = createMessageSystem(realm, stateEventEmitter);
 
   const getState = () => realm.objectForPrimaryKey('State', 'only');
 

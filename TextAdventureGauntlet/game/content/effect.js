@@ -9,8 +9,7 @@ export const defineEffects = (system) => {
   const applyStatusEffect = system.world.statusEffects.apply;
   const getRoom = system.world.rooms.get;
 
-  const renderMessage = system.ui.messages.render;
-  const createMessage = system.ui.messages.create;
+  const publishMessage = system.ui.messages.publish;
 
   defineEffect('delayEffect', ({ delay, effect }, context) => {
     system.scheduleTransaction(delay, () => {
@@ -20,14 +19,10 @@ export const defineEffects = (system) => {
     return null;
   });
 
-  defineEffect('publishMessage', ({ template, effect }, context) => {
+  defineEffect('publishMessage', ({ effect, type }, context) => {
     const effectResult = executeEffect(effect, context);
 
-    const text = renderMessage(template, {
-      effectResult
-    });
-
-    createMessage(text);
+    publishMessage(type, { effectResult });
 
     return effectResult;
   });

@@ -22,7 +22,7 @@ export const createSystem = () => {
 
   const stateEventEmitter = createStateEventEmitter(realm);
   const world = createWorld(realm);
-  const ui = createUI(realm);
+  const ui = createUI(realm, stateEventEmitter);
 
   const transaction = (action) => {
     realm.write(action);

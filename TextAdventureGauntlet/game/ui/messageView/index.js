@@ -4,19 +4,34 @@ import {
   Text,
   ListView,
   Panel
-} from './basics';
+} from '../basics';
 
-import { withSystemState } from './hoc';
+import { withSystemState } from '../hoc';
 
-const renderMessage = (message) => <Text>{message.text}</Text>;
+import { rendererMap } from './messages';
 
 class MessageView extends Component {
+  constructor() {
+    super();
+
+    this.renderMessage = ({ type, data }) => {
+      const render = rendererMap.get(type);
+      if (!render) {
+        return <Text>Not sure what to say about "{type}".</Text>;
+      }
+
+      return render(data, {
+        activeCharacter: this.props.activeCharacter
+      });
+    };
+  }
+
   render() {
     return <Panel>
       <ListView
         shouldLockToBottom={this.props.shouldLockToBottom}
         dataSource={this.props.messageSource}
-        renderRow={renderMessage}
+        renderRow={this.renderMessage}
         enableEmptySections={true} // TODO stop needing this; will a React update help?
       />
     </Panel>;
@@ -25,7 +40,8 @@ class MessageView extends Component {
 
 MessageView.propTypes = {
   shouldLockToBottom: React.PropTypes.bool,
-  messageSource: React.PropTypes.object.isRequired
+  messageSource: React.PropTypes.object.isRequired,
+  activeCharacter: React.PropTypes.object
 };
 
 export default withSystemState(MessageView, (system, prevState) => {
@@ -38,6 +54,7 @@ export default withSystemState(MessageView, (system, prevState) => {
   ).cloneWithRows(newMessages);
 
   return {
+    activeCharacter: system.getActiveCharacter(),
     shouldLockToBottom: true, // TODO check if current scroll is bottom
     messageSource
   };

@@ -24,10 +24,10 @@ const delayAndRequire = (delay, statuses, effect) => {
   return delayEffect(delay, requireActorAndTarget(statuses, effect));
 };
 
-const publishMessage = (template, effect) => {
+const publishMessage = (type, effect) => {
   return {
     key: 'publishMessage',
-    params: { template, effect }
+    params: { template: type, effect, type }
   };
 };
 
@@ -89,7 +89,7 @@ const createHeavyPunchAbility = () => {
   return {
     id: 'heavyPunch',
     name: 'Heavy Punch',
-    effect: createAttack('heavyPunch', 2000, 'Attacking with a heavy punch!', createHit(1000, 100, 2, 'hit!', 'miss!'))
+    effect: createAttack('heavyPunch', 6000, 'Attacking with a heavy punch!', createHit(3000, 100, 2, 'hit!', 'miss!'))
   };
 };
 
@@ -97,10 +97,10 @@ const createComboPunchAbility = () => {
   return {
     id: 'comboPunch',
     name: 'Combo Punch',
-    effect: createAttack('comboPunch', 3000, 'Attacking with a punch combo!', [
-      createHit(1000, 100, -2, 'hit!', 'miss!'),
-      createHit(1500, 100, -2, 'hit!', 'miss!'),
-      createHit(2000, 100, -2, 'hit!', 'miss!')
+    effect: createAttack('comboPunch', 6000, 'Attacking with a punch combo!', [
+      createHit(3000, 100, -2, 'hit!', 'miss!'),
+      createHit(4000, 100, -2, 'hit!', 'miss!'),
+      createHit(5000, 100, -2, 'hit!', 'miss!')
     ])
   };
 };
