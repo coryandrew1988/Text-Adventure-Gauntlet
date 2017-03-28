@@ -1,13 +1,11 @@
-import EventEmitter from 'EventEmitter';
-
 import {
   createClock,
   createScheduler
 } from '../utils';
 
 import { createRealm } from './realm';
+import { createStateEventEmitter } from './stateEventEmitter';
 import { createWorld } from './world';
-
 import { createUI } from './ui';
 
 // TEMP for easy logging in development
@@ -22,6 +20,7 @@ export const createSystem = () => {
   // TODO move all scheduling into the realm as well
   const scheduler = createScheduler();
 
+  const stateEventEmitter = createStateEventEmitter(realm);
   const world = createWorld(realm);
   const ui = createUI(realm);
 
@@ -94,18 +93,6 @@ export const createSystem = () => {
       });
     }
   };
-
-  let updateIsScheduled = false;
-  const stateEventEmitter = new EventEmitter();
-  realm.addListener('change', () => {
-    if (updateIsScheduled) { return; }
-    updateIsScheduled = true;
-
-    requestAnimationFrame(() => {
-      updateIsScheduled = false;
-      stateEventEmitter.emit('change');
-    });
-  });
 
   return {
     world,
