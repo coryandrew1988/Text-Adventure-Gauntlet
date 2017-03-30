@@ -6,6 +6,10 @@ import { registerCharacters } from './character';
 
 export const initializeSystem = (system) => {
   system.transaction(() => {
+    system.ui.initialize({
+      playerCharacterId: 'player'
+    });
+
     defineEffects(system);
     defineStatusEffects(system);
     registerAbilities(system);
