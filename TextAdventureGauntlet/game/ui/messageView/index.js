@@ -51,7 +51,7 @@ export default withSystemState(MessageView, (system, prevState) => {
     new ListView.DataSource({
       rowHasChanged: (a, b) => a !== b
     })
-  ).cloneWithRows(newMessages);
+  ).cloneWithRows(newMessages.slice());
 
   return {
     activeCharacter: system.getActiveCharacter(),
