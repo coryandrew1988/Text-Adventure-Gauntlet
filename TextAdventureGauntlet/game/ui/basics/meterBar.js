@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View as ReactView } from 'react-native';
+import { View } from 'react-native';
 
 const style = {
   position: 'relative',
@@ -15,13 +15,13 @@ const style = {
 
 export default class MeterBar extends Component {
   render() {
-    return <ReactView {...this.props} style={[style, this.props.style]}>
-      <ReactView style={{
+    return <View {...this.props} style={[style, this.props.style]}>
+      <View style={{
         flex: this.props.value,
         backgroundColor: this.props.color
-      }}></ReactView>
-      <ReactView style={{ flex: 1 - this.props.value }}></ReactView>
-      <ReactView style={{
+      }}></View>
+      <View style={{ flex: 1 - this.props.value }}></View>
+      <View style={{
         position: 'absolute',
         top: 0,
         bottom: 0,
@@ -29,8 +29,8 @@ export default class MeterBar extends Component {
         left: 0,
         justifyContent: 'center',
         alignItems: 'center'
-      }}>{this.props.children}</ReactView>
-    </ReactView>
+      }}>{this.props.children}</View>
+    </View>
   }
 }
 

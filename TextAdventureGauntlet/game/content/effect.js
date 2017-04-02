@@ -10,6 +10,7 @@ export const defineEffects = (system) => {
   const getRoom = system.world.rooms.get;
 
   const publishMessage = system.ui.messages.publish;
+  const publishEvent = system.world.events.publish;
 
   defineEffect('delayEffect', ({ delay, effect }, context) => {
     system.scheduleTransaction(delay, () => {
@@ -91,6 +92,13 @@ export const defineEffects = (system) => {
 
       // TODO add status effect 'defeated'
     }
+
+    publishEvent('damage', {
+      attackerId: attacker.id,
+      targetId: target.id,
+      damage,
+      becameDefeated
+    });
 
     return { attacker, target, damage, becameDefeated };
   });
