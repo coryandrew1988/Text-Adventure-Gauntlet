@@ -21,5 +21,5 @@ export default class TextButton extends Component {
 
 TextButton.propTypes = {
   children: React.PropTypes.node,
-  textStyle: React.PropTypes.object
+  textStyle: React.PropTypes.any
 };

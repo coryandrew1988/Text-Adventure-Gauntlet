@@ -5,7 +5,10 @@ import {
   Panel
 } from '../../basics';
 
-import { StatusMeterBarPanel } from '../../special';
+import {
+  CharacterPanel,
+  StatusMeterBarPanel
+} from '../../special';
 
 import { withSystemState } from '../../hoc';
 
@@ -25,23 +28,33 @@ class CharacterTargetPanel extends Component {
         flex: 1,
         margin: 2,
         marginTop: 4,
-        padding: 2,
-        borderStyle: 'solid',
-        borderWidth: 2,
-        borderRadius: 4,
-        borderColor: '#fff',
-        backgroundColor: '#000'
+        padding: 2
       }}
     >
-      <Text>{character.description.name}</Text>
-      <StatusMeterBarPanel
+      <CharacterPanel
+        system={system}
         character={character}
-        textStyle={textStyle}
-        useLabels={true}
-      />
+        style={{
+          flex: 1,
+          padding: 2,
+          borderStyle: 'solid',
+          borderWidth: 2,
+          borderRadius: 4,
+          borderColor: '#fff',
+          backgroundColor: '#000'
+        }}
+      >
+        <Text>{character.description.name}</Text>
+        <StatusMeterBarPanel
+          character={character}
+          textStyle={textStyle}
+          useLabels={true}
+        />
+      </CharacterPanel>
       <TargetCharacterActionsPanel
         system={system}
         targetCharacter={character}
+        style={{ flex: 1 }}
       />
     </Panel>;
   }

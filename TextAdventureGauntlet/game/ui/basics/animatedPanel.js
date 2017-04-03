@@ -13,5 +13,5 @@ export default class AnimatedPanel extends Component {
 
 AnimatedPanel.propTypes = {
   children: React.PropTypes.node,
-  style: React.PropTypes.object
+  style: React.PropTypes.any
 };

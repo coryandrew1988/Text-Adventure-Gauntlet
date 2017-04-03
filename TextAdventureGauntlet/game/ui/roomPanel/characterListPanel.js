@@ -5,18 +5,21 @@ import {
   TextButton
 } from '../basics';
 
+import { CharacterPanel as BasicCharacterPanel } from '../special';
+
 import { withSystemState } from '../hoc';
 
 class CharacterPanel extends Component {
   render() {
     const { system, character, isTarget } = this.props;
 
-    return <TextButton
+    return <BasicCharacterPanel
+      system={system}
+      character={character}
       style={{
         position: 'relative',
         top: isTarget ? -2 : 0,
         margin: 2,
-        padding: 2,
         flex: 1,
         aspectRatio: 1,
         borderRadius: 4,
@@ -25,13 +28,17 @@ class CharacterPanel extends Component {
         borderColor: isTarget ? '#fff' : '#600',
         backgroundColor: '#400'
       }}
-      onPress={() => {
-        system.action.setTarget({
-          type: 'character',
-          id: character.id
-        });
-      }}
-    >{character.description.name}</TextButton>;
+    >
+      <TextButton
+        style={{ padding: 2, flex: 1 }}
+        onPress={() => {
+          system.action.setTarget({
+            type: 'character',
+            id: character.id
+          });
+        }}
+      >{character.description.name}</TextButton>
+    </BasicCharacterPanel>;
   }
 }
 

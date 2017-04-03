@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import {
   Animated,
+  Easing,
   StyleSheet,
   Text as ReactText,
   View,
@@ -23,6 +24,7 @@ export {
   React,
   Component,
   Animated,
+  Easing,
 
   StyleSheet,
 

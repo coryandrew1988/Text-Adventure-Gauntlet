@@ -13,5 +13,5 @@ export default class Panel extends Component {
 
 Panel.propTypes = {
   children: React.PropTypes.node,
-  style: React.PropTypes.object
+  style: React.PropTypes.any
 };
