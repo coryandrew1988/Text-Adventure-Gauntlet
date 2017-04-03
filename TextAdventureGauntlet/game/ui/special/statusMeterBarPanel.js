@@ -8,9 +8,7 @@ import StatusMeterBar from './statusMeterBar';
 
 export default class StatusMeterBarPanel extends Component {
   render() {
-    const character = this.props.character;
-    const textStyle = this.props.textStyle;
-    const useLabels = this.props.useLabels;
+    const { character, textStyle, useLabels } = this.props;
 
     return <Panel style={{
       flexDirection: 'row',

@@ -7,11 +7,15 @@ import {
 
 export default class StatusMeterBar extends Component {
   render() {
-    const value = this.props.value;
-    const maxValue = this.props.maxValue;
-    return <MeterBar value={value / maxValue} color={this.props.color}>
-      <Text style={this.props.textStyle}>
-        {value}/{maxValue}{this.props.useLabels ? ` ${this.props.valueName}` : ''}
+    const {
+      value, maxValue,
+      color, textStyle,
+      useLabels, valueName
+    } = this.props;
+
+    return <MeterBar value={value / maxValue} color={color}>
+      <Text style={textStyle}>
+        {value}/{maxValue}{useLabels ? ` ${valueName}` : ''}
       </Text>
     </MeterBar>;
   }
@@ -25,4 +29,3 @@ StatusMeterBar.propTypes = {
   useLabels: React.PropTypes.bool,
   valueName: React.PropTypes.string
 };
-
