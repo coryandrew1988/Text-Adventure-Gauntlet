@@ -31,7 +31,7 @@ const publishMessage = (type, effect) => {
   };
 };
 
-const createHit = (delay, accuracy, power, hitText, missText) => {
+const createHit = ({ delay, accuracy, power }) => {
   return delayAndRequire(delay, {
     actor: { isAlive: true },
     target: { isAlive: true }
@@ -62,7 +62,7 @@ const createHit = (delay, accuracy, power, hitText, missText) => {
   }));
 };
 
-const createAttack = (abilityId, actorDelay, startText, effect) => {
+const createAttack = ({ abilityId, actorDelay, effect }) => {
   return requireActorAndTarget(
     {
       actor: {
@@ -89,7 +89,15 @@ const createHeavyPunchAbility = () => {
   return {
     id: 'heavyPunch',
     name: 'Heavy Punch',
-    effect: createAttack('heavyPunch', 6000, 'Attacking with a heavy punch!', createHit(3000, 100, 2, 'hit!', 'miss!'))
+    effect: createAttack({
+      abilityId: 'heavyPunch',
+      actorDelay: 6000,
+      effect: createHit({
+        delay: 3000,
+        accuracy: 100,
+        power: 2
+      })
+    })
   };
 };
 
@@ -97,11 +105,27 @@ const createComboPunchAbility = () => {
   return {
     id: 'comboPunch',
     name: 'Combo Punch',
-    effect: createAttack('comboPunch', 6000, 'Attacking with a punch combo!', [
-      createHit(3000, 100, -2, 'hit!', 'miss!'),
-      createHit(4000, 100, -2, 'hit!', 'miss!'),
-      createHit(5000, 100, -2, 'hit!', 'miss!')
-    ])
+    effect: createAttack({
+        abilityId: 'comboPunch',
+        actorDelay: 6000,
+        effect: [
+          createHit({
+            delay: 2000,
+            accuracy: 100,
+            power:  -2
+          }),
+          createHit({
+            delay: 3000,
+            accuracy: 100,
+            power:  -2
+          }),
+          createHit({
+            delay: 4000,
+            accuracy: 100,
+            power:  -2
+          })
+        ]
+    })
   };
 };
 
