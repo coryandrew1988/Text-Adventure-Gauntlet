@@ -5,6 +5,7 @@ import {
   StyleSheet,
   Text as ReactText,
   View,
+  ScrollView,
   ListView as ReactListView,
   TouchableNativeFeedback
 } from 'react-native';
@@ -29,6 +30,7 @@ export {
   StyleSheet,
 
   View,
+  ScrollView,
   ReactText,
   ReactListView,
   TouchableNativeFeedback,

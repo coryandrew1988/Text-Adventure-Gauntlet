@@ -1,7 +1,7 @@
 import {
   React,
   Component,
-  Panel,
+  ScrollView,
   TextButton
 } from '../basics';
 
@@ -19,9 +19,10 @@ class CharacterPanel extends Component {
       style={{
         position: 'relative',
         top: isTarget ? -2 : 0,
-        margin: 2,
-        flex: 1,
-        aspectRatio: 1,
+        margin: 4,
+        padding: 0,
+        width: 72,
+        height: 72,
         borderRadius: 4,
         alignItems: 'center',
         borderWidth: 2,
@@ -53,24 +54,41 @@ const isTarget = (character, target) => {
 };
 
 class CharacterListPanel extends Component {
+  componentWillReceiveProps(nextProps) {
+    const oldCharacters = this.props.characters;
+    const newCharacters = nextProps.characters;
+    if (
+      (
+        oldCharacters.length !== newCharacters.length ||
+        oldCharacters.length > 0 && oldCharacters[0]._id !== newCharacters[0]._id
+      ) &&
+      this.scrollView
+    ) {
+      this.scrollView.scrollTo({ y: 0 });
+    }
+  }
+
   render() {
     const { system, characters, target } = this.props;
 
-    return <Panel style={{
-      flexDirection: 'row',
-      flex: 1,
-      padding: 2,
-      justifyContent: 'space-around',
-      alignItems: 'center',
-      overflow: 'scroll'
-    }}>
+    return <ScrollView
+      horizontal={true}
+      style={{
+        flex: 1
+      }}
+      contentContainerStyle={{
+        flexDirection: 'row',
+        padding: 2
+      }}
+      ref={scrollView => { this.scrollView = scrollView; }}
+    >
       {characters.map(character => <CharacterPanel
         key={character.id}
         system={system}
         character={character}
         isTarget={isTarget(character, target)}
       />)}
-    </Panel>;
+    </ScrollView>;
   }
 }
 
