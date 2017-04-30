@@ -31,7 +31,7 @@ const publishMessage = (type, effect) => {
   };
 };
 
-const createHit = ({ delay, accuracy, power }) => {
+const createHit = ({ delay, accuracy, damage }) => {
   return delayAndRequire(delay, {
     actor: { isAlive: true },
     target: { isAlive: true }
@@ -47,7 +47,7 @@ const createHit = ({ delay, accuracy, power }) => {
           params: {
             prop: 'actor',
             targetProp: 'target',
-            power
+            damage
           }
         },
         {
@@ -95,7 +95,10 @@ const createHeavyPunchAbility = () => {
       effect: createHit({
         delay: 3000,
         accuracy: 100,
-        power: 2
+        damage: {
+          type: 'physical',
+          power:  2
+        }
       })
     })
   };
@@ -112,17 +115,26 @@ const createComboPunchAbility = () => {
           createHit({
             delay: 2000,
             accuracy: 100,
-            power:  -2
+            damage: {
+              type: 'physical',
+              power:  -2
+            }
           }),
           createHit({
             delay: 3000,
             accuracy: 100,
-            power:  -2
+            damage: {
+              type: 'physical',
+              power:  -2
+            }
           }),
           createHit({
             delay: 4000,
             accuracy: 100,
-            power:  -2
+            damage: {
+              type: 'physical',
+              power:  -2
+            }
           })
         ]
     })

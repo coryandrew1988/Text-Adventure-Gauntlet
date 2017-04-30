@@ -21,7 +21,7 @@ export const renderAttackMessage = ({
     </Text>;
   }
 
-  const { damage, becameDefeated } = subEffect[0];
+  const { totalDamage, damageType, becameDefeated } = subEffect[0];
   const { becameProne } = subEffect[1];
 
   const statusMessage = becameDefeated ? ` ${target.description.name} was defeated!` : (
@@ -32,8 +32,8 @@ export const renderAttackMessage = ({
     <Text style={attackerStyle}>
       {attacker.description.name}
     </Text> hit {target.description.name} for <Text style={importantStyle}>
-      {damage}
-    </Text> damage!<Text style={importantStyle}>{statusMessage}</Text>
+      {totalDamage}
+    </Text> {damageType} damage!<Text style={importantStyle}>{statusMessage}</Text>
   </Text>;
 };
 

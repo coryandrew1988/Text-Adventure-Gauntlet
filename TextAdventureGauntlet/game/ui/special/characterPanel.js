@@ -52,17 +52,17 @@ export default class CharacterPanel extends Component {
 
     this.subscription = system.world.events.subscribe('damage', {
       targetId: character.id
-    }, ({ damage, becameDefeated }) => {
-      const damageMagnitude = (
+    }, ({ totalDamage, becameDefeated }) => {
+      const shakeMagnitude = 4 + 4 * (
         becameDefeated ?
           1 :
-          damage / character.stats.maxHP
+          totalDamage / character.stats.maxHP
       );
       const shakeAngle = Math.random() * Math.PI * 2;
       let animation = Animated.parallel([
         this.shake(
-          damageMagnitude * 16 * Math.cos(shakeAngle),
-          damageMagnitude * 16 * Math.sin(shakeAngle)
+          shakeMagnitude * Math.cos(shakeAngle),
+          shakeMagnitude * Math.sin(shakeAngle)
         ),
         this.flash(200, becameDefeated)
       ]);

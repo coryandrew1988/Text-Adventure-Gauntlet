@@ -69,20 +69,37 @@ export const defineEffects = (system) => {
     return executeEffect(effect, context);
   });
 
+  const computeDamage = (damage, attacker, target) => {
+    const { power, type, ignoresResistance } = damage;
+    
+    if (target.stats.damageTypeImmunities[type] > 0) {
+      return 0;
+    }
+
+    const totalPower = (
+      power +
+      attacker.stats.power +
+      attacker.stats.damageTypePowers[type]
+    );
+    const totalResistance = ignoresResistance ? 0 : (
+      target.stats.resistance +
+      target.stats.damageTypeResistances[type]
+    );
+
+    return Math.max(0, totalPower - totalResistance);
+  };
+
   defineEffect('damage', ({
-    prop, targetProp, power, ignoresResistance
+    prop, targetProp, damage
   }, context) => {
     const attacker = context[prop];
     const target = context[targetProp];
 
-    const totalPower = power + attacker.stats.power;
-    const totalResistance = ignoresResistance ? 0 : target.stats.resistance;
-
-    const damage = Math.max(0, totalPower - totalResistance);
+    const totalDamage = computeDamage(damage, attacker, target);
 
     const isAlreadyDefeated = target.stats.hp <= 0;
 
-    target.stats.hp -= damage;
+    target.stats.hp -= totalDamage;
 
     const isDefeated = target.stats.hp <= 0;
     const becameDefeated = isDefeated && !isAlreadyDefeated;
@@ -93,14 +110,17 @@ export const defineEffects = (system) => {
       // TODO add status effect 'defeated'
     }
 
+    const { type: damageType } = damage;
+
     publishEvent('damage', {
       attackerId: attacker.id,
       targetId: target.id,
-      damage,
+      totalDamage,
+      damageType,
       becameDefeated
     });
 
-    return { attacker, target, damage, becameDefeated };
+    return { attacker, target, totalDamage, damageType, becameDefeated };
   });
 
   defineEffect('tilt', ({ targetProp, tilt }, context) => {
