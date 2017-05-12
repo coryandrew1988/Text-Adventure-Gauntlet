@@ -7,11 +7,13 @@
     "test": "jest"
   },
   "dependencies": {
+    "random-seed": "^0.3.0",
     "react": "*",
     "react-native": "^0.42.3",
     "react-native-orientation": "*",
     "realm": "*",
-    "uuid": "*"
+    "uuid": "*",
+    "weighted": "^0.3.0"
   },
   "devDependencies": {
     "babel-jest": "18.0.0",
