@@ -1,7 +1,7 @@
 cd %~dp0
 start emulate
 start package
-timeout 30
+timeout 60
 start run
 start log
 exit
