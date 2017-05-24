@@ -2,10 +2,11 @@ import {
   React,
   Component,
   Animated,
-  Easing,
-  styles,
-  colorSets
+  Easing
 } from '../basics';
+
+import styles from '../styles';
+import colorSets from '../colorSets';
 
 export default class CharacterPanel extends Component {
   shake(x, y) {

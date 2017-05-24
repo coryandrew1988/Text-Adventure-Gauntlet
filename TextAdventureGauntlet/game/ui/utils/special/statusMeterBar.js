@@ -1,9 +1,10 @@
 import {
   React,
   Component,
-  Text,
-  styles
+  Text
 } from '../basics';
+
+import styles from '../styles';
 
 import MeterBar from './meterBar';
 

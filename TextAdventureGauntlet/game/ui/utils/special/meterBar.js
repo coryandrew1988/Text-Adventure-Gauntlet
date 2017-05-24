@@ -1,9 +1,10 @@
 import {
   React,
   Component,
-  View,
-  styles
+  View
 } from '../basics';
+
+import styles from '../styles';
 
 export default class MeterBar extends Component {
   render() {

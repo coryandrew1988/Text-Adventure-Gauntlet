@@ -5,9 +5,7 @@ import {
   Text,
   ListView,
   ScrollView,
-  TextButton,
-  styles,
-  colorSets
+  TextButton
 } from './basics';
 
 import {
@@ -16,6 +14,9 @@ import {
 } from './special';
 
 import { withSystemState } from './hoc';
+
+import styles from './styles';
+import colorSets from './colorSets';
 
 export {
   React,

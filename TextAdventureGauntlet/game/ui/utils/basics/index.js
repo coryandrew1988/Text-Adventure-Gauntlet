@@ -8,9 +8,6 @@ import {
   ListView as ReactListView,
 } from 'react-native';
 
-import styles from './styles';
-import colorSets from './colorSets';
-
 import TextButton from './textButton';
 import Button from './button';
 
@@ -26,9 +23,6 @@ export {
   Text,
   ScrollView,
   ReactListView,
-
-  styles,
-  colorSets,
 
   Button,
   TextButton,

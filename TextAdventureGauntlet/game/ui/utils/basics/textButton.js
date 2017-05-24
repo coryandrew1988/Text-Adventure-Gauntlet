@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
 import { Text } from 'react-native';
 
+import styles from '../styles';
+
 import Button from './button';
-import styles from './styles';
 
 export default class TextButton extends Component {
   render() {
