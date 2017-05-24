@@ -1,21 +1,16 @@
 import React, { Component } from 'react';
 
-import PanelButton from './panelButton';
+import Button from './button';
 import Text from './text';
-
-const textStyle = {
-  fontWeight: 'bold',
-  //color: '#000',
-  alignItems: 'center'
-};
+import styles from './styles';
 
 export default class TextButton extends Component {
   render() {
-    return <PanelButton {...this.props}>
-      <Text style={[textStyle, this.props.textStyle]}>
+    return <Button {...this.props}>
+      <Text style={[styles.buttonText, this.props.textStyle]}>
         {this.props.children}
       </Text>
-    </PanelButton>
+    </Button>
   }
 }
 

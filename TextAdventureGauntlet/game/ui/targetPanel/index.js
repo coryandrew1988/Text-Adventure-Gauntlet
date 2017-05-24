@@ -1,7 +1,8 @@
 import {
   React,
   Component,
-  Panel
+  View,
+  styles
 } from '../basics';
 
 import { withSystemState } from '../hoc';
@@ -30,7 +31,7 @@ class TargetPanel extends Component {
   }
 
   render() {
-    return <Panel>{this.renderTarget()}</Panel>;
+    return <View style={styles.panel}>{this.renderTarget()}</View>;
   }
 }
 

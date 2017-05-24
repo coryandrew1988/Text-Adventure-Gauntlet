@@ -2,7 +2,9 @@ import {
   React,
   Component,
   Text,
-  Panel
+  View,
+  styles,
+  colorSets
 } from '../basics';
 
 import { withSystemState } from '../hoc';
@@ -14,16 +16,15 @@ class RoomPanel extends Component {
   render() {
     const { system, fixtures } = this.props;
 
-    return <Panel style={{
-      margin: 0,
+    return <View style={[styles.panel, {
+      margin: 2,
       padding: 2,
-      borderWidth: 2,
-      borderColor: '#bbb'
-    }}>
+      backgroundColor: colorSets.negative[1]
+    }]}>
       <Text>{this.props.room.description.name}</Text>
       <CharacterListPanel system={system} />
       <FixtureListPanel system={system} fixtures={fixtures} />
-    </Panel>;
+    </View>;
   }
 }
 

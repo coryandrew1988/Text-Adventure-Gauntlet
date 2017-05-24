@@ -1,3 +1,5 @@
-export const friendlyStyle = { color: '#88f' };
-export const hostileStyle = { color: '#f44' };
-export const importantStyle = { color: '#ff0' };
+import { colorSets } from '../../basics';
+
+export const friendlyStyle = { color: colorSets.cold[4] };
+export const hostileStyle = { color: colorSets.hot[4] };
+export const importantStyle = { color: colorSets.warm[4] };

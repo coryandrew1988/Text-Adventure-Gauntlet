@@ -1,7 +1,8 @@
 import {
   React,
   Component,
-  Panel
+  View,
+  colorSets
 } from './basics';
 
 import ActiveCharacterPanel from './activeCharacterPanel';
@@ -16,27 +17,27 @@ const style = {
   padding: 2,
   flexDirection: 'column',
   justifyContent: 'flex-start',
-  backgroundColor: '#000'
+  backgroundColor: colorSets.negative[0]
 };
 
 export default class UI extends Component {
   render() {
     const { system } = this.props;
 
-    return <Panel style={style}>
-      <Panel style={{ flex: 4 }}>
+    return <View style={style}>
+      <View style={{ flex: 4 }}>
         <MessageView system={system} />
-      </Panel>
-      <Panel style={{ flex: 4 }}>
+      </View>
+      <View style={{ flex: 4 }}>
         <RoomPanel system={system} />
-      </Panel>
-      <Panel style={{ flex: 3 }}>
+      </View>
+      <View style={{ flex: 3 }}>
         <TargetPanel system={system} />
-      </Panel>
-      <Panel style={{ flex: 1 }}>
+      </View>
+      <View style={{ flex: 1 }}>
         <ActiveCharacterPanel system={system} />
-      </Panel>
-    </Panel>
+      </View>
+    </View>
   }
 }
 

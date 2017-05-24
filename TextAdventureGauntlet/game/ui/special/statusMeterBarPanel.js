@@ -1,7 +1,7 @@
 import {
   React,
   Component,
-  Panel
+  View
 } from '../basics';
 
 import StatusMeterBar from './statusMeterBar';
@@ -10,7 +10,7 @@ export default class StatusMeterBarPanel extends Component {
   render() {
     const { character, textStyle, useLabels } = this.props;
 
-    return <Panel style={{
+    return <View style={{
       flexDirection: 'row',
       flex: 1
     }}>
@@ -38,7 +38,7 @@ export default class StatusMeterBarPanel extends Component {
         color="#00d"
         useLabels={useLabels}
       />
-    </Panel>;
+    </View>;
   }
 }
 

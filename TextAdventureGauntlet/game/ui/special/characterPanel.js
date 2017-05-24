@@ -3,7 +3,8 @@ import {
   Component,
   Animated,
   Easing,
-  AnimatedPanel
+  styles,
+  colorSets
 } from '../basics';
 
 export default class CharacterPanel extends Component {
@@ -89,15 +90,19 @@ export default class CharacterPanel extends Component {
     const { style } = this.props;
     const animatedBackgroundColor = this.state.flashValue.interpolate({
       inputRange: [-1, 0, 1],
-      outputRange: ['#444', style.backgroundColor || '#000', '#fff']
+      outputRange: [
+        colorSets.negative[0],
+        style.backgroundColor || colorSets.negative[0],
+        colorSets.neutral[0]
+      ]
     });
 
-    return <AnimatedPanel style={[style, {
+    return <Animated.View style={[style, {
       backgroundColor: animatedBackgroundColor,
       transform: this.state.shakeMagnitude.getTranslateTransform()
-    }]}>
+    }, styles.panel]}>
       {this.props.children}
-    </AnimatedPanel>
+    </Animated.View>
   }
 }
 

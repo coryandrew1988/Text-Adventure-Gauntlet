@@ -4,7 +4,7 @@ import {
   View
 } from 'react-native';
 
-export default class PanelButton extends Component {
+export default class Button extends Component {
   render() {
     return <TouchableNativeFeedback onPress={this.props.onPress}>
       <View {...this.props}>
@@ -14,7 +14,7 @@ export default class PanelButton extends Component {
   }
 }
 
-PanelButton.propTypes = {
+Button.propTypes = {
   children: React.PropTypes.node,
   onPress: React.PropTypes.func.isRequired
 };

@@ -1,35 +1,19 @@
 import React, { Component } from 'react';
 import { View } from 'react-native';
 
-const style = {
-  position: 'relative',
-  margin: 1,
-  flex: 1,
-  flexDirection: 'row',
-  borderStyle: 'solid',
-  borderColor: '#fff',
-  borderRadius: 4,
-  borderWidth: 2,
-  backgroundColor: '#777'
-};
+import styles from './styles';
 
 export default class MeterBar extends Component {
   render() {
-    return <View {...this.props} style={[style, this.props.style]}>
-      <View style={{
-        flex: this.props.value,
-        backgroundColor: this.props.color
-      }}></View>
-      <View style={{ flex: 1 - this.props.value }}></View>
-      <View style={{
-        position: 'absolute',
-        top: 0,
-        bottom: 0,
-        right: 0,
-        left: 0,
-        justifyContent: 'center',
-        alignItems: 'center'
-      }}>{this.props.children}</View>
+    const { children, style, value, color } = this.props;
+
+    return <View {...this.props} style={[styles.meterBar, style]}>
+      <View style={[
+        { flex: value, backgroundColor: color },
+        styles.meterBarInner
+      ]}></View>
+      <View style={{ flex: 1 - value }}></View>
+      <View style={styles.meterBarOverlay}>{children}</View>
     </View>
   }
 }

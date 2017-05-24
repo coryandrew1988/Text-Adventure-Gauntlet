@@ -2,7 +2,8 @@ import {
   React,
   Component,
   ScrollView,
-  TextButton
+  TextButton,
+  colorSets
 } from '../basics';
 
 import { CharacterPanel as BasicCharacterPanel } from '../special';
@@ -17,17 +18,13 @@ class CharacterPanel extends Component {
       system={system}
       character={character}
       style={{
-        position: 'relative',
-        top: isTarget ? -2 : 0,
-        margin: 4,
+        margin: 2,
         padding: 0,
         width: 72,
         height: 72,
         borderRadius: 4,
         alignItems: 'center',
-        borderWidth: 2,
-        borderColor: isTarget ? '#fff' : '#600',
-        backgroundColor: '#400'
+        backgroundColor: isTarget ? colorSets.negative[4] : colorSets.negative[3]
       }}
     >
       <TextButton

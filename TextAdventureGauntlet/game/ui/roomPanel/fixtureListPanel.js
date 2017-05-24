@@ -1,8 +1,9 @@
 import {
   React,
   Component,
-  Panel,
-  TextButton
+  View,
+  TextButton,
+  colorSets
 } from '../basics';
 
 import { withSystemState } from '../hoc';
@@ -13,17 +14,13 @@ class FixturePanel extends Component {
 
     return <TextButton
       style={{
-        position: 'relative',
-        top: isTarget ? -2 : 0,
         margin: 2,
         padding: 2,
         flex: 1,
         aspectRatio: 1,
         borderRadius: 4,
         alignItems: 'center',
-        borderWidth: 2,
-        borderColor: isTarget ? '#fff' : '#666',
-        backgroundColor: '#444'
+        backgroundColor: isTarget ? colorSets.negative[4] : colorSets.negative[3]
       }}
       onPress={() => {
         system.action.setTarget({
@@ -51,7 +48,7 @@ class FixtureListPanel extends Component {
   render() {
     const { system, fixtures, target } = this.props;
 
-    return <Panel style={{
+    return <View style={{
       flexDirection: 'row',
       flex: 1,
       padding: 2,
@@ -64,7 +61,7 @@ class FixtureListPanel extends Component {
         fixture={fixture}
         isTarget={isTarget(fixture, target)}
       />)}
-    </Panel>;
+    </View>;
   }
 }
 

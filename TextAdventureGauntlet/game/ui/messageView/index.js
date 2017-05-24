@@ -3,7 +3,8 @@ import {
   Component,
   Text,
   ListView,
-  Panel
+  View,
+  styles
 } from '../basics';
 
 import { withSystemState } from '../hoc';
@@ -27,14 +28,14 @@ class MessageView extends Component {
   }
 
   render() {
-    return <Panel>
+    return <View style={styles.panel}>
       <ListView
         shouldLockToBottom={this.props.shouldLockToBottom}
         dataSource={this.props.messageSource}
         renderRow={this.renderMessage}
         enableEmptySections={true} // TODO stop needing this; will a React update help?
       />
-    </Panel>;
+    </View>;
   }
 }
 
@@ -47,7 +48,7 @@ MessageView.propTypes = {
 export default withSystemState(MessageView, (system, prevState) => {
   const newMessages = system.ui.messages.getAll();
   const messageSource = (
-    prevState.messageSource ||
+    (prevState && prevState.messageSource) ||
     new ListView.DataSource({
       rowHasChanged: (a, b) => a !== b
     })

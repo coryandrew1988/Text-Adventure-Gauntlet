@@ -2,20 +2,19 @@ import React, { Component } from 'react';
 import {
   Animated,
   Easing,
-  StyleSheet,
   Text as ReactText,
   View,
   ScrollView,
   ListView as ReactListView,
-  TouchableNativeFeedback
+  TouchableHighlight as TouchableNativeFeedback // TODO research best practice
 } from 'react-native';
 
-import Panel from './panel';
+import styles from './styles';
+import colorSets from './colorSets';
 import Text from './text';
-import AnimatedPanel from './animatedPanel';
 
 import TextButton from './textButton';
-import PanelButton from './panelButton';
+import Button from './button';
 
 import ListView from './listView';
 
@@ -27,19 +26,18 @@ export {
   Animated,
   Easing,
 
-  StyleSheet,
-
   View,
   ScrollView,
   ReactText,
   ReactListView,
   TouchableNativeFeedback,
 
-  Panel,
-  Text,
-  AnimatedPanel,
+  styles,
+  colorSets,
 
-  PanelButton,
+  Text,
+
+  Button,
   TextButton,
 
   ListView,

@@ -1,8 +1,9 @@
 import {
   React,
   Component,
-  Panel,
-  TextButton
+  View,
+  TextButton,
+  colorSets
 } from '../../basics';
 
 import { withSystemState } from '../../hoc';
@@ -20,11 +21,11 @@ class AbilityButton extends Component {
       style={{
         margin: 1,
         padding: 2,
-        backgroundColor: '#dd0',
+        backgroundColor: colorSets.cool[4],
         borderRadius: 4
       }}
       textStyle={{
-        color: '#000'
+        color: colorSets.negative[2]
       }}
       onPress={() => {
         system.action.useAbility(ability, activeCharacter, targetCharacter);
@@ -50,8 +51,9 @@ class TargetCharacterActionsPanel extends Component {
       targetCharacter
     } = this.props;
 
-    return <Panel
+    return <View
       style={{
+        flex: 1,
         margin: 1,
         padding: 1
       }}
@@ -65,7 +67,7 @@ class TargetCharacterActionsPanel extends Component {
           targetCharacter={targetCharacter}
         />
       })}
-    </Panel>;
+    </View>;
   }
 }
 

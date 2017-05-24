@@ -1,8 +1,9 @@
 import {
   React,
   Component,
-  Panel,
-  TextButton
+  View,
+  TextButton,
+  styles
 } from '../../basics';
 
 import { withSystemState } from '../../hoc';
@@ -50,12 +51,7 @@ class FixtureActionsPanel extends Component {
       fixture
     } = this.props;
 
-    return <Panel
-      style={{
-        margin: 1,
-        padding: 1
-      }}
-    >
+    return <View style={styles.panel}>
       {fixture.actions.map((action) => {
         return <ActionButton
           key={action.id}
@@ -65,7 +61,7 @@ class FixtureActionsPanel extends Component {
           fixture={fixture}
         />
       })}
-    </Panel>;
+    </View>;
   }
 }
 

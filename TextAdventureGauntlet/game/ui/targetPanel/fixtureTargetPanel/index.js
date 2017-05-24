@@ -2,7 +2,9 @@ import {
   React,
   Component,
   Text,
-  Panel
+  View,
+  styles,
+  colorSets
 } from '../../basics';
 
 import { withSystemState } from '../../hoc';
@@ -13,25 +15,15 @@ class FixtureTargetPanel extends Component {
   render() {
     const { system, fixture } = this.props;
 
-    return <Panel
-      style={{
-        flex: 1,
-        margin: 2,
-        marginTop: 4,
-        padding: 2,
-        borderStyle: 'solid',
-        borderWidth: 2,
-        borderRadius: 4,
-        borderColor: '#fff',
-        backgroundColor: '#000'
-      }}
-    >
+    return <View style={[{
+      backgroundColor: colorSets.negative[2]
+    }, styles.panel]}>
       <Text>{fixture.description.name}</Text>
       <FixtureActionsPanel
         system={system}
         fixture={fixture}
       />
-    </Panel>;
+    </View>;
   }
 }
 
@@ -48,4 +40,3 @@ export default withSystemState(
     return { system, fixture };
   }
 );
-

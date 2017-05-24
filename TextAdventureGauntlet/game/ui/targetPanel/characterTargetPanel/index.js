@@ -1,8 +1,12 @@
 import {
   React,
   Component,
+
   Text,
-  Panel
+  View,
+
+  styles,
+  colorSets
 } from '../../basics';
 
 import {
@@ -23,25 +27,15 @@ class CharacterTargetPanel extends Component {
   render() {
     const { system, character } = this.props;
 
-    return <Panel
-      style={{
-        flex: 1,
-        margin: 2,
-        marginTop: 4,
-        padding: 2
-      }}
-    >
+    return <View style={styles.panel}>
       <CharacterPanel
         system={system}
         character={character}
         style={{
           flex: 1,
           padding: 2,
-          borderStyle: 'solid',
-          borderWidth: 2,
           borderRadius: 4,
-          borderColor: '#fff',
-          backgroundColor: '#000'
+          backgroundColor: colorSets.negative[1]
         }}
       >
         <Text>{character.description.name}</Text>
@@ -56,7 +50,7 @@ class CharacterTargetPanel extends Component {
         targetCharacter={character}
         style={{ flex: 1 }}
       />
-    </Panel>;
+    </View>;
   }
 }
 

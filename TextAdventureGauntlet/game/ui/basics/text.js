@@ -1,15 +1,11 @@
 import React, { Component } from 'react';
 import { Text as ReactText } from 'react-native';
 
-const style = {
-  fontFamily: 'serif',
-  fontSize: 11,
-  color: '#fff'
-};
+import styles from './styles';
 
 export default class Text extends Component {
   render() {
-    return <ReactText {...this.props} style={[style, this.props.style]}>
+    return <ReactText {...this.props} style={[styles.text, this.props.style]}>
       {this.props.children}
     </ReactText>
   }
