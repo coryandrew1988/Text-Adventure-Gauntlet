@@ -1,9 +1,13 @@
-import CharacterPanel from './characterPanel';
+import MeterBar from './meterBar';
 import StatusMeterBar from './statusMeterBar';
 import StatusMeterBarPanel from './statusMeterBarPanel';
 
+import CharacterPanel from './characterPanel';
+
 export {
-  CharacterPanel,
+  MeterBar,
   StatusMeterBar,
-  StatusMeterBarPanel
+  StatusMeterBarPanel,
+
+  CharacterPanel
 };

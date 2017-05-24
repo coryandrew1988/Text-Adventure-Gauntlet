@@ -18,8 +18,6 @@ import Button from './button';
 
 import ListView from './listView';
 
-import MeterBar from './meterBar';
-
 export {
   React,
   Component,
@@ -40,7 +38,5 @@ export {
   Button,
   TextButton,
 
-  ListView,
-
-  MeterBar
+  ListView
 };

@@ -1,9 +1,10 @@
 import {
   React,
   Component,
-  Text,
-  MeterBar
+  Text
 } from '../basics';
+
+import MeterBar from './meterBar';
 
 export default class StatusMeterBar extends Component {
   render() {
