@@ -2,16 +2,14 @@ import React, { Component } from 'react';
 import {
   Animated,
   Easing,
-  Text as ReactText,
+  Text,
   View,
   ScrollView,
   ListView as ReactListView,
-  TouchableHighlight as TouchableNativeFeedback // TODO research best practice
 } from 'react-native';
 
 import styles from './styles';
 import colorSets from './colorSets';
-import Text from './text';
 
 import TextButton from './textButton';
 import Button from './button';
@@ -25,15 +23,12 @@ export {
   Easing,
 
   View,
+  Text,
   ScrollView,
-  ReactText,
   ReactListView,
-  TouchableNativeFeedback,
 
   styles,
   colorSets,
-
-  Text,
 
   Button,
   TextButton,

@@ -18,7 +18,7 @@ class FixtureTargetPanel extends Component {
     return <View style={[{
       backgroundColor: colorSets.negative[2]
     }, styles.panel]}>
-      <Text>{fixture.description.name}</Text>
+      <Text style={styles.text}>{fixture.description.name}</Text>
       <FixtureActionsPanel
         system={system}
         fixture={fixture}

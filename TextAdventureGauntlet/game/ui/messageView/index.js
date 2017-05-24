@@ -18,7 +18,9 @@ class MessageView extends Component {
     this.renderMessage = ({ type, data }) => {
       const render = rendererMap.get(type);
       if (!render) {
-        return <Text>Not sure what to say about "{type}".</Text>;
+        return <Text style={styles.text}>
+          Not sure what to say about "{type}".
+        </Text>;
       }
 
       return render(data, {

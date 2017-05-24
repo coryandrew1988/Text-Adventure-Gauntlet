@@ -1,10 +1,8 @@
 import {
   React,
   Component,
-
   Text,
   View,
-
   styles,
   colorSets
 } from '../../basics';
@@ -38,7 +36,7 @@ class CharacterTargetPanel extends Component {
           backgroundColor: colorSets.negative[1]
         }}
       >
-        <Text>{character.description.name}</Text>
+        <Text style={styles.text}>{character.description.name}</Text>
         <StatusMeterBarPanel
           character={character}
           textStyle={textStyle}

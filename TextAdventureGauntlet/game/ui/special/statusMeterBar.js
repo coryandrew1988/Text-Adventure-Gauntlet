@@ -1,7 +1,8 @@
 import {
   React,
   Component,
-  Text
+  Text,
+  styles
 } from '../basics';
 
 import MeterBar from './meterBar';
@@ -15,7 +16,7 @@ export default class StatusMeterBar extends Component {
     } = this.props;
 
     return <MeterBar value={value / maxValue} color={color}>
-      <Text style={textStyle}>
+      <Text style={[styles.text, textStyle]}>
         {value}/{maxValue}{useLabels ? ` ${valueName}` : ''}
       </Text>
     </MeterBar>;

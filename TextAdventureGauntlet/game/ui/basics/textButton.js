@@ -1,13 +1,17 @@
 import React, { Component } from 'react';
+import { Text } from 'react-native';
 
 import Button from './button';
-import Text from './text';
 import styles from './styles';
 
 export default class TextButton extends Component {
   render() {
     return <Button {...this.props}>
-      <Text style={[styles.buttonText, this.props.textStyle]}>
+      <Text style={[
+        styles.text,
+        styles.buttonText,
+        this.props.textStyle
+      ]}>
         {this.props.children}
       </Text>
     </Button>

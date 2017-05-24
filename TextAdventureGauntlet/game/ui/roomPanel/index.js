@@ -21,7 +21,7 @@ class RoomPanel extends Component {
       padding: 2,
       backgroundColor: colorSets.negative[1]
     }]}>
-      <Text>{this.props.room.description.name}</Text>
+      <Text style={styles.text}>{this.props.room.description.name}</Text>
       <CharacterListPanel system={system} />
       <FixtureListPanel system={system} fixtures={fixtures} />
     </View>;

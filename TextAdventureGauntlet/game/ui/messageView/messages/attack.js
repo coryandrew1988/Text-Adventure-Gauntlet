@@ -1,6 +1,7 @@
 import {
   React,
-  Text
+  Text,
+  styles
 } from '../../basics';
 
 import {
@@ -14,7 +15,7 @@ export const renderAttackMessage = ({
 }, { activeCharacter }) => {
   const attackerStyle = attacker.id === activeCharacter.id ? friendlyStyle : hostileStyle;
   if (!isHit) {
-    return <Text>
+    return <Text style={styles.text}>
       <Text style={attackerStyle}>
         {attacker.description.name}
       </Text> missed {target.description.name}!
@@ -28,7 +29,7 @@ export const renderAttackMessage = ({
     becameProne ? ` ${target.description.name} was knocked down!` : ''
   );
 
-  return <Text>
+  return <Text style={styles.text}>
     <Text style={attackerStyle}>
       {attacker.description.name}
     </Text> hit {target.description.name} for <Text style={importantStyle}>

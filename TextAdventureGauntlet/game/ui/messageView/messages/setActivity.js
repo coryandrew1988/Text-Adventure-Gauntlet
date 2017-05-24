@@ -1,6 +1,7 @@
 import {
   React,
-  Text
+  Text,
+  styles
 } from '../../basics';
 
 import {
@@ -13,7 +14,7 @@ export const renderSetActivityMessage = ({
   effectResult: { character, ability }
 }, { activeCharacter }) => {
   const characterStyle = character.id === activeCharacter.id ? friendlyStyle : hostileStyle;
-  return <Text>
+  return <Text style={styles.text}>
     <Text style={characterStyle}>
       {character.description.name}
     </Text> started using <Text style={importantStyle}>
