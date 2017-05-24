@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import {
+  StyleSheet,
   Animated,
   Easing,
   Text,
@@ -16,6 +17,8 @@ import ListView from './listView';
 export {
   React,
   Component,
+
+  StyleSheet,
   Animated,
   Easing,
 

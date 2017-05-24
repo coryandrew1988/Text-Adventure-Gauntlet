@@ -1,9 +1,6 @@
 import { StyleSheet } from 'react-native';
 
-import {
-  positive,
-  neutral
-} from './colorSets';
+import colorSets from './colorSets';
 
 export default StyleSheet.create({
   panel: {
@@ -14,7 +11,7 @@ export default StyleSheet.create({
   text: {
     fontFamily: 'serif',
     fontSize: 11,
-    color: positive[4]
+    color: colorSets.positive[4]
   },
   buttonText: {
     fontWeight: 'bold',
@@ -26,7 +23,7 @@ export default StyleSheet.create({
     flex: 1,
     flexDirection: 'row',
     borderRadius: 6,
-    backgroundColor: neutral[0]
+    backgroundColor: colorSets.neutral[0]
   },
   meterBarInner: {
     borderRadius: 6
@@ -39,5 +36,17 @@ export default StyleSheet.create({
     left: 0,
     justifyContent: 'center',
     alignItems: 'center'
+  },
+  targetSelector: {
+    margin: 2,
+    padding: 2,
+    width: 72,
+    height: 72,
+    borderRadius: 4,
+    alignItems: 'center',
+    backgroundColor: colorSets.negative[3]
+  },
+  activeTargetSelector: {
+    backgroundColor: colorSets.negative[4]
   }
 });

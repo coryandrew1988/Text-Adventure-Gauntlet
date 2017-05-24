@@ -26,11 +26,12 @@ export {
   ListView,
   ScrollView,
   TextButton,
-  styles,
-  colorSets,
 
   CharacterPanel,
   StatusMeterBarPanel,
 
-  withSystemState
+  withSystemState,
+
+  styles,
+  colorSets
 };

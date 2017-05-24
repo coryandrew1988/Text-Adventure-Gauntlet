@@ -3,7 +3,8 @@ import {
   Component,
   ScrollView,
   TextButton,
-  colorSets,
+
+  styles,
 
   CharacterPanel as BasicCharacterPanel,
 
@@ -17,15 +18,10 @@ class CharacterPanel extends Component {
     return <BasicCharacterPanel
       system={system}
       character={character}
-      style={{
-        margin: 2,
-        padding: 0,
-        width: 72,
-        height: 72,
-        borderRadius: 4,
-        alignItems: 'center',
-        backgroundColor: isTarget ? colorSets.negative[4] : colorSets.negative[3]
-      }}
+      style={[
+        styles.targetSelector,
+        isTarget ? styles.activeTargetSelector : null
+      ]}
     >
       <TextButton
         style={{ padding: 2, flex: 1 }}

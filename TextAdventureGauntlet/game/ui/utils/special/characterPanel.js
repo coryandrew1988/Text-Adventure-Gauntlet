@@ -2,7 +2,8 @@ import {
   React,
   Component,
   Animated,
-  Easing
+  Easing,
+  StyleSheet
 } from '../basics';
 
 import styles from '../styles';
@@ -93,7 +94,7 @@ export default class CharacterPanel extends Component {
       inputRange: [-1, 0, 1],
       outputRange: [
         colorSets.negative[0],
-        style.backgroundColor || colorSets.negative[0],
+        StyleSheet.flatten(style).backgroundColor || colorSets.negative[0],
         colorSets.neutral[0]
       ]
     });
