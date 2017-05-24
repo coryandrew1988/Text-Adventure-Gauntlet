@@ -1,13 +1,13 @@
 import {
   React,
   Component,
+  View,
   Text,
   ListView,
-  View,
-  styles
-} from '../basics';
+  styles,
 
-import { withSystemState } from '../hoc';
+  withSystemState
+} from '../utils';
 
 import { rendererMap } from './messages';
 

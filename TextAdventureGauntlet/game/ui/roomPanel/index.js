@@ -4,10 +4,10 @@ import {
   Text,
   View,
   styles,
-  colorSets
-} from '../basics';
+  colorSets,
 
-import { withSystemState } from '../hoc';
+  withSystemState
+} from '../utils';
 
 import CharacterListPanel from './characterListPanel';
 import FixtureListPanel from './fixtureListPanel';

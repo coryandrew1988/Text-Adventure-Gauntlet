@@ -3,10 +3,10 @@ import {
   Component,
   View,
   TextButton,
-  colorSets
-} from '../basics';
+  colorSets,
 
-import { withSystemState } from '../hoc';
+  withSystemState
+} from '../utils';
 
 class FixturePanel extends Component {
   render() {

@@ -3,10 +3,10 @@ import {
   Component,
   View,
   TextButton,
-  colorSets
-} from '../../basics';
-
-import { withSystemState } from '../../hoc';
+  colorSets,
+  
+  withSystemState
+} from '../../utils';
 
 class AbilityButton extends Component {
   render() {

@@ -1,4 +1,4 @@
-import { React, Component } from './ui/basics';
+import { React, Component } from './ui/utils';
 
 import UI from './ui';
 import { createSystem } from './system';

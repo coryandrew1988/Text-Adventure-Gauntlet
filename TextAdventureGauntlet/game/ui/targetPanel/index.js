@@ -2,10 +2,10 @@ import {
   React,
   Component,
   View,
-  styles
-} from '../basics';
-
-import { withSystemState } from '../hoc';
+  styles,
+  
+  withSystemState
+} from '../utils';
 
 import CharacterTargetPanel from './characterTargetPanel';
 import FixtureTargetPanel from './fixtureTargetPanel';

@@ -2,7 +2,7 @@ import {
   React,
   Text,
   styles
-} from '../../basics';
+} from '../../utils';
 
 import {
   friendlyStyle,

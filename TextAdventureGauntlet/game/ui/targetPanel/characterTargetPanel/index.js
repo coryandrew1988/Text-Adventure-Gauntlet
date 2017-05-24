@@ -4,15 +4,13 @@ import {
   Text,
   View,
   styles,
-  colorSets
-} from '../../basics';
-
-import {
+  colorSets,
+  
   CharacterPanel,
-  StatusMeterBarPanel
-} from '../../special';
-
-import { withSystemState } from '../../hoc';
+  StatusMeterBarPanel,
+  
+  withSystemState
+} from '../../utils';
 
 import TargetCharacterActionsPanel from './targetCharacterActionsPanel';
 

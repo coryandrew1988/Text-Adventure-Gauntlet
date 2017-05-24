@@ -1,4 +1,4 @@
-import { colorSets } from '../../basics';
+import { colorSets } from '../../utils';
 
 export const friendlyStyle = { color: colorSets.cold[4] };
 export const hostileStyle = { color: colorSets.hot[4] };

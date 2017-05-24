@@ -3,12 +3,12 @@ import {
   Component,
   ScrollView,
   TextButton,
-  colorSets
-} from '../basics';
+  colorSets,
 
-import { CharacterPanel as BasicCharacterPanel } from '../special';
+  CharacterPanel as BasicCharacterPanel,
 
-import { withSystemState } from '../hoc';
+  withSystemState
+} from '../utils';
 
 class CharacterPanel extends Component {
   render() {

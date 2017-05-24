@@ -4,10 +4,10 @@ import {
   Text,
   View,
   styles,
-  colorSets
-} from '../../basics';
-
-import { withSystemState } from '../../hoc';
+  colorSets,
+  
+  withSystemState
+} from '../../utils';
 
 import FixtureActionsPanel from './fixtureActionsPanel';
 
@@ -15,9 +15,9 @@ class FixtureTargetPanel extends Component {
   render() {
     const { system, fixture } = this.props;
 
-    return <View style={[{
+    return <View style={[styles.panel, {
       backgroundColor: colorSets.negative[2]
-    }, styles.panel]}>
+    }]}>
       <Text style={styles.text}>{fixture.description.name}</Text>
       <FixtureActionsPanel
         system={system}

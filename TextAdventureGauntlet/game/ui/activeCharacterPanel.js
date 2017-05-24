@@ -1,14 +1,12 @@
 import {
   React,
-  Component
-} from './basics';
+  Component,
 
-import {
   CharacterPanel,
-  StatusMeterBarPanel
-} from './special';
+  StatusMeterBarPanel,
 
-import { withSystemState } from './hoc';
+  withSystemState
+} from './utils';
 
 const textStyle = {
   fontSize: 18,

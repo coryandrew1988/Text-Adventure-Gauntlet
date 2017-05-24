@@ -3,10 +3,9 @@ import {
   Component,
   View,
   TextButton,
-  styles
-} from '../../basics';
-
-import { withSystemState } from '../../hoc';
+  styles,
+  withSystemState
+} from '../../utils';
 
 class ActionButton extends Component {
   render() {

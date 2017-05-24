@@ -3,7 +3,7 @@ import {
   Component,
   View,
   colorSets
-} from './basics';
+} from './utils';
 
 import ActiveCharacterPanel from './activeCharacterPanel';
 import MessageView from './messageView';

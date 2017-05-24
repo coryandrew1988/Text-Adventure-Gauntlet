@@ -8,8 +8,6 @@ const withSystemState = (WrappedComponent, computerWrappedProps) => {
     constructor() {
       super();
 
-
-
       this.updateState = () => {
         this.setState((prevState) => {
           return computerWrappedProps(this.props.system, prevState, this.props);
